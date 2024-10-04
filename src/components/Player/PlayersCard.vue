@@ -76,7 +76,7 @@ const props = defineProps({ player: Object });
     display: block;
     overflow: hidden;
     font-weight: 700;
-    height: 30px;
+    height: 19px;
 }
 
 .player__cardName {
@@ -117,10 +117,10 @@ const props = defineProps({ player: Object });
 
 .player__photo {
     position: absolute;
-    top: 9px;
-    left: 30px;
-    width: 45px;
-    height: 45px;
+    top: 13px;
+    left: 34px;
+    width: 40px;
+    height: 40px;
     border-radius: 4px;
 }
 

@@ -3,24 +3,58 @@
         <h2>Заповніть поля</h2>
         <form @submit.prevent="createPlayer">
             <div class="form__inputSection">
-                <input type="text" placeholder="І'мя" v-model="initialFormValues.name" required />
-                <input type="text" placeholder="Прізвище" v-model="initialFormValues.surname" required />
-                <input type="number" min="1" max="99" placeholder="Номер" v-model="initialFormValues.number" required />
+                <input @input="props.changeFormValue('name', $event.target.value)" v-model="props.initialFormValues.name" type="text" placeholder="І'мя" required>
+                <input @input="props.changeFormValue('surname', $event.target.value)" v-model="props.initialFormValues.surname" type="text" placeholder="Прізвище" required>
+                <input @input="props.changeFormValue('number', $event.target.value)" v-model="props.initialFormValues.number" type="number" min="1" max="99" placeholder="Номер" required>
                 <label> Завантажте фото для картки
                     <span class="tip__icon">
                         <TipIcon />
                         <span class="tip__helpText">Зайвий фон з фото буде прибрано.</span>
                     </span>
                 </label>
-                <input type="file">
+                <input type="file" @change="handlePhotoUpload">            
+                <div v-if="imageUrl" class="form__previewImage">
+                    <img :src="imageUrl" alt="Предварительный просмотр" />
+                </div>
             </div>
         </form>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { TipIcon } from '@/constants/importIcons';
-const props = defineProps({ initialFormValues: Object, changeFormValue: Function, handlePhotoUpload: Function });
+
+const props = defineProps({
+    initialFormValues: {
+        type: Object,
+        required: true
+    },
+    changeFormValue: {
+        type: Function,
+        required: true
+    },
+    handlePhotoUpload: {
+        type: Function,
+        required: true
+    }
+});
+
+// Реактивное состояние для хранения URL загруженного изображения
+const imageUrl = ref(null);
+
+const handlePhotoUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Сохраняем файл и его имя в состоянии
+    props.initialFormValues.file = file; 
+    props.initialFormValues.fileName = file.name; 
+
+    // Создаем URL для предварительного просмотра изображения
+    imageUrl.value = URL.createObjectURL(file); // Создание URL для изображения
+};
+
 </script>
 
 <style>
@@ -42,6 +76,19 @@ const props = defineProps({ initialFormValues: Object, changeFormValue: Function
     justify-content: center;
     width: auto;
     height: 180px;
+}
+
+.form__previewImage {
+    display: flex;
+    position: absolute;
+    left: 152px;
+    top: 62px;
+}
+
+.form__previewImage img {
+    height: 80px;
+    width: 60px;
+    border-radius: 13px;
 }
 
 .form__inputSection {
@@ -119,4 +166,5 @@ const props = defineProps({ initialFormValues: Object, changeFormValue: Function
     visibility: visible;
     opacity: 1;
 }
+
 </style>

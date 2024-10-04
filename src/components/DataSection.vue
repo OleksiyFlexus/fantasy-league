@@ -1,17 +1,19 @@
 <template>
-    <div class="data__barSection">
-        <AddButton @click="openModal" />
-        <p>Показано результатів: </p>
-    </div>
-    <ModalWindow :isActive="isModalActive" @close="closeModal">
-        <PlayerInfoCard :initialFormValues="initialFormValues" />
-        <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue" :handlePhotoUpload="handlePhotoUpload" />
-        <div class="button__container">
-            <CloseButton @click="close" />
-            <SaveButton @click="createPlayer" />
+    <div>
+        <div class="data__barSection">
+            <AddButton @click="openModal" />
+            <p>Показано результатів: {{ players.length }}</p>
         </div>
-    </ModalWindow>
-
+        <ModalWindow :isActive="isModalActive" @close="closeModal">
+            <PlayerInfoCard :initialFormValues="initialFormValues" />
+            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
+                :handlePhotoUpload="handlePhotoUpload" />
+            <div class="button__container">
+                <CloseButton @click="close" />
+                <SaveButton @click="createPlayer" />
+            </div>
+        </ModalWindow>
+    </div>
 </template>
 
 <script setup>
@@ -27,7 +29,15 @@ import PlayerInfoCard from './Player/PlayerInfoCard.vue';
 import SaveButton from './SaveButton.vue';
 import CloseButton from './CloseButton.vue';
 
+const props = defineProps({
+    players: {
+        type: Array,
+        required: true,
+    }
+});
+
 const isModalActive = ref(false);
+const initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
 
 const openModal = () => {
     isModalActive.value = true;
@@ -37,11 +47,8 @@ const closeModal = () => {
     isModalActive.value = false;
 };
 
-let initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
-const players = ref([]);
-
 const close = () => {
-    initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
+    Object.assign(initialFormValues, { name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
     closeModal();
 }
 
@@ -66,7 +73,7 @@ const createPlayer = async () => {
                         'state_changed',
                         (snapshot) => {
                             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log(`Upload is ${progress}% done`);
+                            console.log(`Завантаження ${progress}% успішно`);
                         },
                         (error) => {
                             reject(error);
@@ -81,10 +88,9 @@ const createPlayer = async () => {
                 await updatePlayerPhoto(playerId, photoUrl);
             }
 
-            await findAllPlayers();
             close();
         } catch (error) {
-            console.error('Ошибка при создании игрока:', error);
+            console.error('Помилка при створенні гравця:', error);
         }
     } else {
         console.log('Заповніть данні гравця');
@@ -96,22 +102,16 @@ const updatePlayerPhoto = async (playerId, photoUrl) => {
         const playerDocRef = doc(firestoreDb, 'players', playerId);
         await updateDoc(playerDocRef, { photo: photoUrl });
     } catch (error) {
-        console.error('Ошибка при обновлении фото игрока:', error);
+        console.error('Помилка при оновленні фото гравця:', error);
     }
 };
 
-
 const changeFormValue = (type, value) => {
     if (type in initialFormValues) {
-        if (type === 'number') {
-            if (value === 0) {
-                return
-            }
-            if (value.length <= 2) {
-                initialFormValues[type] = value;
-            } else {
-                initialFormValues[type] = value.slice(0, 2);
-            }
+        if (type === 'number' && value.length > 2) {
+            initialFormValues[type] = value.slice(0, 2);
+        } else {
+            initialFormValues[type] = value;
         }
     }
 };
@@ -120,12 +120,9 @@ const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Сохраняем файл и его имя в состоянии
-    initialFormValues.file = file;
-    initialFormValues.fileName = file.name;
+    props.initialFormValues.file = file;
+    props.initialFormValues.fileName = file.name;
 };
-
-
 
 </script>
 

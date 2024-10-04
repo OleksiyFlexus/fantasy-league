@@ -2,7 +2,7 @@
     <router-view></router-view>
     <div>
         <PlayersMainContent />
-        <DataSection />
+        <DataSection :players="players" />
         <PlayerTable />
         <PlayersList :players="players" />
     </div>
@@ -18,22 +18,14 @@ import { findAllPlayerInDb } from '@/api/player';
 
 const players = ref([]);
 
-const findAllPlayers = async () => {
+const fetchPlayers = async () => {
   try {
     const playerDocs = await findAllPlayerInDb();
-    if (playerDocs.empty) {
-      console.log('Гравців не знайдено в БД');
-    } else {
-      players.value = playerDocs.map(doc => doc);
-    }
+    players.value = playerDocs.map(doc => doc);
   } catch (error) {
-    console.error("Помилка при завантаженні данних гравців:", error);
+    console.error('Ошибка при загрузке игроков:', error);
   }
 };
 
-onMounted(async () => {
-  await findAllPlayers();
-});
+onMounted(fetchPlayers);
 </script>
-
-<style scoped></style>
