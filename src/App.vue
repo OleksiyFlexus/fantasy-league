@@ -1,7 +1,15 @@
 <script setup>
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+
 
 </script>
 
 <template>
-    <h1>Clear VUE 3 project</h1>
+    <Header />
+    <main class="app_container">
+        <router-view />
+    </main>
+    <Footer />
+
 </template>

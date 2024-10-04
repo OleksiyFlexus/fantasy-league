@@ -1,0 +1,147 @@
+<template>
+    <div class="data__barSection">
+        <AddButton @click="openModal" />
+        <p>Показано результатів: </p>
+    </div>
+    <ModalWindow :isActive="isModalActive" @close="closeModal">
+        <PlayerInfoCard :initialFormValues="initialFormValues" />
+        <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue" :handlePhotoUpload="handlePhotoUpload" />
+        <div class="button__container">
+            <CloseButton @click="close" />
+            <SaveButton @click="createPlayer" />
+        </div>
+    </ModalWindow>
+
+</template>
+
+<script setup>
+import { reactive, ref } from 'vue';
+import { createPlayerInDb } from '@/api/player.js';
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
+import { firestoreDb } from '@/firebase';
+import { doc, updateDoc } from '@firebase/firestore';
+import AddButton from './AddButton.vue';
+import ModalWindow from './ModalWindow.vue';
+import CreatePlayerForm from './Player/CreatePlayerForm.vue';
+import PlayerInfoCard from './Player/PlayerInfoCard.vue';
+import SaveButton from './SaveButton.vue';
+import CloseButton from './CloseButton.vue';
+
+const isModalActive = ref(false);
+
+const openModal = () => {
+    isModalActive.value = true;
+};
+
+const closeModal = () => {
+    isModalActive.value = false;
+};
+
+let initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
+const players = ref([]);
+
+const close = () => {
+    initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
+    closeModal();
+}
+
+const createPlayer = async () => {
+    if (initialFormValues.surname && initialFormValues.number) {
+        try {
+            const playerData = {
+                name: initialFormValues.name,
+                surname: initialFormValues.surname,
+                number: initialFormValues.number,
+                photo: ''
+            };
+            const playerId = await createPlayerInDb(playerData);
+
+            if (initialFormValues.file) {
+                const storage = getStorage();
+                const fileRef = storageRef(storage, `players/${initialFormValues.name}_${initialFormValues.surname}_${initialFormValues.number}_${initialFormValues.photo}`);
+                const uploadTask = uploadBytesResumable(fileRef, initialFormValues.file);
+
+                const photoUrl = await new Promise((resolve, reject) => {
+                    uploadTask.on(
+                        'state_changed',
+                        (snapshot) => {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log(`Upload is ${progress}% done`);
+                        },
+                        (error) => {
+                            reject(error);
+                        },
+                        () => {
+                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                resolve(downloadURL);
+                            });
+                        }
+                    );
+                });
+                await updatePlayerPhoto(playerId, photoUrl);
+            }
+
+            await findAllPlayers();
+            close();
+        } catch (error) {
+            console.error('Ошибка при создании игрока:', error);
+        }
+    } else {
+        console.log('Заповніть данні гравця');
+    }
+};
+
+const updatePlayerPhoto = async (playerId, photoUrl) => {
+    try {
+        const playerDocRef = doc(firestoreDb, 'players', playerId);
+        await updateDoc(playerDocRef, { photo: photoUrl });
+    } catch (error) {
+        console.error('Ошибка при обновлении фото игрока:', error);
+    }
+};
+
+
+const changeFormValue = (type, value) => {
+    if (type in initialFormValues) {
+        if (type === 'number') {
+            if (value === 0) {
+                return
+            }
+            if (value.length <= 2) {
+                initialFormValues[type] = value;
+            } else {
+                initialFormValues[type] = value.slice(0, 2);
+            }
+        }
+    }
+};
+
+const handlePhotoUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Сохраняем файл и его имя в состоянии
+    initialFormValues.file = file;
+    initialFormValues.fileName = file.name;
+};
+
+
+
+</script>
+
+<style scoped>
+.data__barSection {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    gap: 25px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.button__container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+</style>
