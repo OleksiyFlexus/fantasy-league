@@ -3,18 +3,23 @@
         <h2>Заповніть поля</h2>
         <form @submit.prevent="createPlayer">
             <div class="form__inputSection">
-                <input @input="props.changeFormValue('name', $event.target.value)" v-model="props.initialFormValues.name" type="text" placeholder="І'мя" required>
-                <input @input="props.changeFormValue('surname', $event.target.value)" v-model="props.initialFormValues.surname" type="text" placeholder="Прізвище" required>
-                <input @input="props.changeFormValue('number', $event.target.value)" v-model="props.initialFormValues.number" type="number" min="1" max="99" placeholder="Номер" required>
-                <label> Завантажте фото для картки
-                    <span class="tip__icon">
-                        <TipIcon />
-                        <span class="tip__helpText">Зайвий фон з фото буде прибрано.</span>
+                <input @input="props.changeFormValue('name', $event.target.value)"
+                    v-model="props.initialFormValues.name" type="text" placeholder="І'мя" required>
+                <input @input="props.changeFormValue('surname', $event.target.value)"
+                    v-model="props.initialFormValues.surname" type="text" placeholder="Прізвище" required>
+                <input @input="props.changeFormValue('number', $event.target.value)"
+                    v-model="props.initialFormValues.number" type="number" min="1" max="99" placeholder="Номер"
+                    required>
+                <div class="buttonSection">
+                    <input type="file" id="fileUpload" @change="handlePhotoUpload">
+                    <label for="fileUpload"> Завантажте фото для картки</label>
+                    <span>
+                        <UploadIcon />
                     </span>
-                </label>
-                <input type="file" @change="handlePhotoUpload">            
-                <div v-if="imageUrl" class="form__previewImage">
-                    <img :src="imageUrl" alt="Предварительный просмотр" />
+                    <div class="form__previewImage">
+                        <img v-if="imageUrl" :src="imageUrl" alt="Предварительный просмотр" />
+                        <img v-else src="@/assets/images/UndefinePhoto.png" alt="default player photo">
+                    </div>
                 </div>
             </div>
         </form>
@@ -23,7 +28,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { TipIcon } from '@/constants/importIcons';
+import { UploadIcon } from '@/constants/importIcons';
 
 const props = defineProps({
     initialFormValues: {
@@ -46,8 +51,8 @@ const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    props.initialFormValues.file = file; 
-    props.initialFormValues.fileName = file.name; 
+    props.initialFormValues.file = file;
+    props.initialFormValues.fileName = file.name;
 
     imageUrl.value = URL.createObjectURL(file);
 };
@@ -60,6 +65,47 @@ const handlePhotoUpload = (event) => {
     flex-direction: column;
     gap: 10px;
 }
+
+.buttonSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+.buttonSection span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1bbc9b;
+    width: 38px;
+    height: 38px;
+    border-radius: 5px;
+}
+
+.form__inputSection svg {
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
+
+.form__inputSection label {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #1bbc9b;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+}
+
+.form__inputSection label:hover {
+    background-color: #13a084;
+    /* Цвет фона при наведении */
+}
+
 
 .form__section h2 {
     font-weight: 700;
@@ -78,14 +124,15 @@ const handlePhotoUpload = (event) => {
 .form__previewImage {
     display: flex;
     position: absolute;
-    left: 152px;
-    top: 62px;
+    left: 155px;
+    top: 70px;
 }
 
 .form__previewImage img {
-    height: 80px;
+    height: 70px;
     width: 60px;
     border-radius: 13px;
+    object-fit: cover;
 }
 
 .form__inputSection {
@@ -104,10 +151,8 @@ const handlePhotoUpload = (event) => {
     font-size: 16px;
 }
 
-.form__section input:nth-child(5) {
-    border: none;
-    outline: none;
-    text-transform: none;
+.form__inputSection input[type="file"] {
+    display: none;
 }
 
 .form__section select {
@@ -119,49 +164,6 @@ const handlePhotoUpload = (event) => {
 
 .form__section label {
     cursor: default;
-}
-
-.tip__icon {
-    position: relative;
-    display: inline-block;
-}
-
-.tip__icon svg {
-    width: 15px;
-    height: 15px;
-}
-
-.tip__helpText {
-    visibility: hidden;
-    width: 200px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -100px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.tip__helpText::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-}
-
-.tip__icon:hover .tip__helpText {
-    visibility: visible;
-    opacity: 1;
 }
 
 </style>

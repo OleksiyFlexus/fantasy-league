@@ -1,7 +1,7 @@
 <template>
     <div class="playerList__container">
       <div v-if="!!players.length" v-for="player in players" :key="player.id" class="table__items">
-        <PlayersCard :player="player"/>
+        <PlayerListItem :player="player"/>
       </div>
       <div v-else class="table__items">
         <h1>Жодного гравця не знайдено</h1>
@@ -10,7 +10,7 @@
   </template>
   
   <script setup>
-  import PlayersCard from './Player/PlayersCard.vue';
+  import PlayerListItem from './Player/PlayerListItem.vue';
   const props = defineProps({ players: Array });
   </script>
   

@@ -11,7 +11,7 @@
 <script setup>
 import SearchBar from '@/components/SearchBar.vue';
 import TeamsDataSection from '@/components/Team/TeamsDataSection.vue';
-import TeamsTable from '@/components/ComonTableHeader.vue'
+import TeamsTable from '@/components/TableHeader.vue'
 
 
 

@@ -5,7 +5,7 @@
             <p>Показано результатів: {{ players.length }}</p>
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
-            <PlayerInfoCard :initialFormValues="initialFormValues" />
+            <PlayerCard :initialFormValues="initialFormValues" />
             <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
                 :handlePhotoUpload="handlePhotoUpload" />
             <div class="button__container">
@@ -26,7 +26,7 @@ import { doc, updateDoc } from '@firebase/firestore';
 import AddButton from '../AddButton.vue';
 import ModalWindow from '../ModalWindow.vue';
 import CreatePlayerForm from './CreatePlayerForm.vue';
-import PlayerInfoCard from './PlayerInfoCard.vue';
+import PlayerCard from './PlayerCard.vue';
 import SaveButton from '../SaveButton.vue';
 import CloseButton from '../CloseButton.vue';
 

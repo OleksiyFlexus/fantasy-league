@@ -3,19 +3,19 @@
     <div class="common_container">
         <PlayersMainContent />
         <SearchBar />
-        <PlayersDataSection :players="players" />
-        <PlayerTable />
-        <DataItemsList :players="players" />
+        <CreatePlayersSection :players="players" />
+        <TableHeader />
+        <DataBaseItemsList :players="players" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import PlayersDataSection from '@/components/Player/PlayersDataSection.vue';
-import DataItemsList from '@/components/DataItemsList.vue';
-import PlayersMainContent from '@/components/Player/PlayersMainContent.vue';
-import PlayerTable from '@/components/ComonTableHeader.vue';
 import { findAllPlayerInDb } from '@/api/player';
+import PlayersMainContent from '@/components/Player/PlayersMainContent.vue';
+import TableHeader from '@/components/TableHeader.vue';
+import CreatePlayersSection from '@/components/Player/CreatePlayersSection.vue';
+import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 import SearchBar from '@/components/SearchBar.vue';
 
 const players = ref([]);
@@ -30,4 +30,5 @@ const fetchPlayers = async () => {
 };
 
 onMounted(fetchPlayers);
+
 </script>

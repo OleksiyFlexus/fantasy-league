@@ -20,7 +20,7 @@ const props = defineProps({
 .addBtn {
     display: inline-block;
     border-radius: 4px;
-    background-color: #2c012f;
+    background-color: #1bbc9b;
     border: none;
     color: #FFFFFF;
     text-align: center;

@@ -3,28 +3,26 @@
         <h2>Заповніть поля</h2>
         <form @submit.prevent="createTeam">
             <div class="form__inputSection">
-                <input type="text" placeholder="Введіть назву команди" required>
-                <label> Завантажте логотип команди
-                    <span class="tip__icon">
-                        <TipIcon />
-                        <span class="tip__helpText">Зайвий фон з лого буде прибрано.
-                        </span>
+                <input type="text" placeholder="введіть назву команди" required>
+                <div class="buttonSection">
+                    <input type="file" id="fileUpload" @change="handleLogoUpload" />
+                    <label for="fileUpload">Завантажити логотип</label>
+                    <span>
+                        <UploadIcon />
                     </span>
-                </label>
-                <div class="team__prewievLogo">
-                    <input type="file" @change="handleLogoUpload" />
-                    <img v-if="imageUrl" :src="imageUrl" alt="team logo">
-                    <img v-else src="../../assets/images/DefaultTeamLogo.png" alt="default team logo">
                 </div>
             </div>
-            
         </form>
+        <div class="team__prewievLogo">
+            <img v-if="imageUrl" :src="imageUrl" alt="team logo">
+            <img v-else src="../../assets/images/DefaultTeamLogo.png" alt="default team logo">
+        </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { TipIcon } from '@/constants/importIcons';
+import { UploadIcon } from '@/constants/importIcons';
 
 const imageUrl = ref(null);
 const initialFormValues = ref({
@@ -48,12 +46,34 @@ const handleLogoUpload = (event) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 15px;
 }
 
-.form__section input:nth-child(3) {
+.form__inputSection input[type="file"] {
+    display: none;
+}
+
+.form__inputSection svg {
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
+
+.form__inputSection label {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #1bbc9b;
+    color: #000;
+    font-weight: 700;
     border: none;
-    outline: none;
-    text-transform: none;
+    border-radius: 5px;
+}
+
+.form__inputSection label:hover {
+    background-color: #13a084;
+    /* Цвет фона при наведении */
 }
 
 .form__section img {
@@ -61,10 +81,27 @@ const handleLogoUpload = (event) => {
     width: 250px;
     object-fit: cover;
 }
+
+.buttonSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+.buttonSection span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1bbc9b;
+    width: 38px;
+    height: 38px;
+    border-radius: 5px;
+}
+
 .team__prewievLogo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 </style>

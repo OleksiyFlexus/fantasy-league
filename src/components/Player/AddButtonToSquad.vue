@@ -12,14 +12,14 @@ import { AddToTeamIcon } from '@/constants/importIcons';
 .add_playerToSquad {
     display: flex;
     align-items: center;
-    background-color: #426B1F;
+    background-color: #1bbc9b;
     border: none;
     color: white;
     padding: 10px 10px;
     text-align: center;
     font-size: 10px;
     margin: 4px 2px;
-    opacity: 0.6;
+    opacity: 1;
     transition: 0.3s;
     border-radius: 10px;
     height: 25px;
@@ -31,6 +31,6 @@ import { AddToTeamIcon } from '@/constants/importIcons';
 }
 
 .add_playerToSquad:hover {
-    opacity: 1
+    opacity: 0.6;
 }
 </style>

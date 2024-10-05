@@ -1,7 +1,7 @@
 <template>
     <div class="image__section">
         <img src="@/assets/images/PlayerCard.png" alt="player card">
-        <p class="card__PlayerName">{{ props.initialFormValues.surname }}</p>
+        <p class="card__PlayerSurname">{{ props.initialFormValues.surname }}</p>
         <p class="card__PlayerNumber"> {{ props.initialFormValues.number }}</p>
     </div>
 </template>
@@ -23,7 +23,7 @@ const props = defineProps({ initialFormValues: Object });
     width: auto;
 }
 
-.card__PlayerName {
+.card__PlayerSurname {
     position: absolute;
     bottom: 65px;
     font-size: clamp(12px, 2vw, 12px);
@@ -50,5 +50,4 @@ const props = defineProps({ initialFormValues: Object });
     justify-content: center;
     align-items: center;
 }
-
 </style>
