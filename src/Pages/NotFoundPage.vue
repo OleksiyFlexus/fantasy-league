@@ -1,8 +1,8 @@
 <template>
     <router-view></router-view>
-    <div class="pageNf">
-        <Error404 />
-    </div>
+        <div class="pageNf">
+            <Error404 />
+        </div>
 </template>
 
 <script setup>

@@ -1,30 +1,20 @@
 <template>
     <router-view></router-view>
     <div class="common_container">
-        <div class="eventBackground">
-
-        </div>
-
-
+        <EventBackground />
+        <Event />
+        <Protocol />
+        <ProtocolPlayerItem />
     </div>
 
 </template>
 
 <script setup>
+import Event from '@/components/Match/Event.vue';
+import EventBackground from '@/components/Match/EventBackground.vue';
+import Protocol from '@/components/Match/Protocol.vue';
+import ProtocolPlayerItem from '@/components/Player/ProtocolPlayerItems.vue';
 
 </script>
 
-<style scoped>
-.eventBackground {
-    display: flex;
-    height: 200px;
-    width: 355px;
-    border-radius: 20px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    backdrop-filter: blur(5px);
-    background-image:url('../assets/images/MatchEventBackground.jpg');
- 
-}
-</style>
+<style scoped></style>
