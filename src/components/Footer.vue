@@ -33,7 +33,7 @@ import { MatchIcon, PlayerIcon, TableIcon, TeamIcon } from '@/constants/importIc
 .footer {
     width: 100%;
     height: 75px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(31, 30, 30, 0.4);
     background-color: #fff;
     position: fixed;
     bottom: 0;

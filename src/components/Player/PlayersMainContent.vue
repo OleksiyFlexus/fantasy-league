@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import SearchBar from '../SearchBar.vue';
+import SearchBar from '@/components/SearchBar.vue';
 
 
 </script>
@@ -48,7 +48,7 @@ import SearchBar from '../SearchBar.vue';
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
 .main__logo {

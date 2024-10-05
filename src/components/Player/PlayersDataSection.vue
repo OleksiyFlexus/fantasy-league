@@ -17,17 +17,18 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
+import {useModalWindow } from '@/helpers/useModalWindow'
 import { createPlayerInDb } from '@/api/player.js';
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
 import { firestoreDb } from '@/firebase';
 import { doc, updateDoc } from '@firebase/firestore';
-import AddButton from './AddButton.vue';
-import ModalWindow from './ModalWindow.vue';
-import CreatePlayerForm from './Player/CreatePlayerForm.vue';
-import PlayerInfoCard from './Player/PlayerInfoCard.vue';
-import SaveButton from './SaveButton.vue';
-import CloseButton from './CloseButton.vue';
+import AddButton from '../AddButton.vue';
+import ModalWindow from '../ModalWindow.vue';
+import CreatePlayerForm from './CreatePlayerForm.vue';
+import PlayerInfoCard from './PlayerInfoCard.vue';
+import SaveButton from '../SaveButton.vue';
+import CloseButton from '../CloseButton.vue';
 
 const props = defineProps({
     players: {
@@ -36,16 +37,9 @@ const props = defineProps({
     }
 });
 
-const isModalActive = ref(false);
 const initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
 
-const openModal = () => {
-    isModalActive.value = true;
-};
-
-const closeModal = () => {
-    isModalActive.value = false;
-};
+const { isModalActive, openModal, closeModal } = useModalWindow();
 
 const close = () => {
     Object.assign(initialFormValues, { name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
@@ -141,4 +135,5 @@ const handlePhotoUpload = (event) => {
     justify-content: center;
     gap: 20px;
 }
+
 </style>

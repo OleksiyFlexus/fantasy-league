@@ -40,19 +40,16 @@ const props = defineProps({
     }
 });
 
-// Реактивное состояние для хранения URL загруженного изображения
 const imageUrl = ref(null);
 
 const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Сохраняем файл и его имя в состоянии
     props.initialFormValues.file = file; 
     props.initialFormValues.fileName = file.name; 
 
-    // Создаем URL для предварительного просмотра изображения
-    imageUrl.value = URL.createObjectURL(file); // Создание URL для изображения
+    imageUrl.value = URL.createObjectURL(file);
 };
 
 </script>

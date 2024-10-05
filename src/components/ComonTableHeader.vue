@@ -1,6 +1,6 @@
 <template>
     <router-view></router-view>
-    <div class="player__tableHeader">
+    <div class="tableHeader">
         <ul class="tableItems">
             <li>Загальна інформація</li>
             <li>Статистика</li>
@@ -16,7 +16,7 @@
 </script>
 
 <style scoped>
-.player__tableHeader {
+.tableHeader {
     display: flex;
     justify-content: space-between;
     background-color: #1a19192d;
@@ -29,7 +29,17 @@
     display: flex;
     align-items: center;
     text-align: center;
-    gap: 70px;
+    gap: 90px;
 
+}
+
+.tableItems::before {
+    content: '';
+    position: absolute;
+    height: 60px;
+    width: 2px;
+    background: #4d4949;
+    right: 165px;
+    transform: translateX(-50%);
 }
 </style>

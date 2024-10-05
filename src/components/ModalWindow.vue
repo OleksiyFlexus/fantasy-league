@@ -3,7 +3,6 @@
         <div class="modal-container" :class="{ 'fade-in': isActive, 'fade-out': !isActive }" @click.stop>
             <div class="modal-header">
                 <slot name="header">
-                    <p>Форма створення гравця</p>
                     <button @click="closeModal" class="close-modal-button">&times;</button>
                 </slot>
             </div>
@@ -53,8 +52,6 @@ const closeModal = () => {
     max-width: 500px;
     width: 90%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transform: scale(0.8);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -70,10 +67,8 @@ const closeModal = () => {
 
 .modal-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    font-size: 18px;
-    font-weight: 700;
 }
 
 .close-modal-button {
@@ -86,6 +81,10 @@ const closeModal = () => {
 .modal-body {
     font-size: 16px;
     color: #333;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
 </style>

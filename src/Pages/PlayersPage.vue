@@ -2,18 +2,18 @@
     <router-view></router-view>
     <div>
         <PlayersMainContent />
-        <DataSection :players="players" />
+        <PlayersDataSection :players="players" />
         <PlayerTable />
-        <PlayersList :players="players" />
+        <DataItemsList :players="players" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import DataSection from '@/components/DataSection.vue';
-import PlayersList from '@/components/Player/PlayersList.vue';
+import PlayersDataSection from '@/components/Player/PlayersDataSection.vue';
+import DataItemsList from '@/components/DataItemsList.vue';
 import PlayersMainContent from '@/components/Player/PlayersMainContent.vue';
-import PlayerTable from '@/components/Player/PlayersTable.vue';
+import PlayerTable from '@/components/ComonTableHeader.vue';
 import { findAllPlayerInDb } from '@/api/player';
 
 const players = ref([]);
@@ -23,7 +23,7 @@ const fetchPlayers = async () => {
     const playerDocs = await findAllPlayerInDb();
     players.value = playerDocs.map(doc => doc);
   } catch (error) {
-    console.error('Ошибка при загрузке игроков:', error);
+    console.error('Помилка при завантаженні гравців:', error);
   }
 };
 

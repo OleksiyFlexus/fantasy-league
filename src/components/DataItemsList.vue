@@ -10,7 +10,7 @@
   </template>
   
   <script setup>
-  import PlayersCard from './PlayersCard.vue';
+  import PlayersCard from './Player/PlayersCard.vue';
   const props = defineProps({ players: Array });
   </script>
   

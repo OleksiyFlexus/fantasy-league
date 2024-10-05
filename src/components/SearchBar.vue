@@ -1,40 +1,46 @@
 <template>
-    <div class="search__bar">
-        <input type="text" v-model="searchQuery" :placeholder="placeholderText" class="search__input" />
+    <div class="search__barSection">
+        <div class="search__bar">
+            <input type="text" v-model="input" :placeholder="placeholderText" class="search__input" />
+        </div>
+        <div class="searchBar__button">
+            <SearchIcon />
+        </div>
     </div>
-    <div class="searchBar__button">
-        <SearchIcon />
-    </div>
-
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { SearchIcon } from '@/constants/importIcons.js';
-
-const searchQuery = ref('');
 
 const props = defineProps({
     placeholderText: {
         type: String,
-        default: 'Пошук гравців'
-    }
+        default: 'Пошук гравців',
+    },
 });
 
 </script>
 
 <style scoped>
+.search__barSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
 .search__bar {
-    border: 2px solid #666;
     border-radius: 25px;
     padding: 5px;
     margin: auto 0;
     display: flex;
+    align-items: center;
     justify-content: flex-start;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
+    height: 40px;
     max-width: 600px;
-    background-color: #1a1919f6;
+    background-color: #1a1919e7;
 }
 
 .search__input {
@@ -43,7 +49,9 @@ const props = defineProps({
     background-color: transparent;
     color: #fff;
     outline: none;
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
     padding: 0.5rem;
 }
 
@@ -56,8 +64,8 @@ const props = defineProps({
 }
 
 .searchBar__button {
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 50px;
     background-color: #646464;
     border: none;
     border-radius: 50%;
@@ -72,5 +80,4 @@ const props = defineProps({
     height: auto;
     width: 25px;
 }
-
 </style>

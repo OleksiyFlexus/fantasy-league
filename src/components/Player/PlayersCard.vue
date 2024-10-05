@@ -1,32 +1,32 @@
 <template>
-    <div class="player__infoSection">
-        <div class="player__cardSection">
-            <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
-            <p class="player__cardName">{{ player.surname }}</p>
-            <p class="player__Number">{{ player.number }}</p>
-            <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
-            <img v-else class="player__photo" src="../../assets/images/UndefinePhoto.png" alt="player photo">
-        </div>
-        <div class="player__nameSection">
-            <p class="playerName">{{ player.name }}</p>
-            <p class="playerSurname">{{ player.surname }}</p>
-            <AddButtonToSquad />
-        </div>
-        <div class="player__statSection">
-            <div class="player__statItem">
-                <Games />
-                <span>Матчі</span>
+        <div class="player__items">
+            <div class="player__cardSection">
+                <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
+                <p class="player__cardName">{{ player.surname }}</p>
+                <p class="player__Number">{{ player.number }}</p>
+                    <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
+                    <img v-else class="player__photo" src="../../assets/images/UndefinePhoto.png" alt="player photo">
             </div>
-            <div class="player__statItem">
-                <Goals />
-                <span>Голи</span>
+            <div class="player__nameSection">
+                <p class="playerName">{{ player.name }}</p>
+                <p class="playerSurname">{{ player.surname }}</p>
+                <AddButtonToSquad />
             </div>
-            <div class="player__statItem">
-                <Assist />
-                <span>Ассисти</span>
+            <div class="player__statSection">
+                <div class="player__statItem">
+                    <Games />
+                    <span>Матчі</span>
+                </div>
+                <div class="player__statItem">
+                    <Goals />
+                    <span>Голи</span>
+                </div>
+                <div class="player__statItem">
+                    <Assist />
+                    <span>Ассисти</span>
+                </div>
             </div>
         </div>
-    </div>
 
 </template>
 
@@ -37,13 +37,18 @@ const props = defineProps({ player: Object });
 </script>
 
 <style scoped>
-.player__cardSection {
-    position: absolute;
+
+.player__items {
     display: flex;
+    justify-content: space-between;
+    background-color: #cecece31;
+    border-radius: 12px;
+}
+
+.player__cardSection {
+    display: flex;
+    position: relative;
     justify-content: center;
-    height: 105px;
-    width: 85px;
-    z-index: -1;
 }
 
 .card__img {
@@ -53,10 +58,9 @@ const props = defineProps({ player: Object });
 
 .player__nameSection {
     display: flex;
-    position: absolute;
-    left: 95px;
     flex-direction: column;
     max-width: 108px;
+    gap: 2px;
     padding-top: 20px;
 }
 
@@ -118,25 +122,18 @@ const props = defineProps({ player: Object });
 .player__photo {
     position: absolute;
     top: 13px;
-    left: 34px;
+    left: 33px;
     width: 40px;
     height: 40px;
     border-radius: 4px;
-}
-
-.player__infoSection {
-    display: flex;
-    width: 355px;
-    height: 105px;
-    align-items: flex-start;
+    object-fit: cover;
 }
 
 .player__statSection {
     display: flex;
-    position: absolute;
-    left: 205px;
-    gap: 20px;
-    align-items: center;
+    align-items:flex-start;
+    gap: 15px;
+    padding: 4px 4px;
 }
 
 .player__statItem {

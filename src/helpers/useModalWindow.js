@@ -1,18 +1,22 @@
 import { ref } from "vue";
 
 export function useModalWindow() {
-  const isShowModal = ref(false);
+  const isModalActive = ref(false);
+
+  const openModal = () => {
+    isModalActive.value = true;
+    document.body.classList.add('no-scroll');
+};
 
   function closeModal() {
-    isShowModal.value = false;
+    isModalActive.value = false;
+    document.body.classList.remove('no-scroll');
   }
 
-  function showModal() {
-    isShowModal.value = true;
-  }
+
   return {
-    isShowModal,
-    showModal,
+    isModalActive,
+    openModal,
     closeModal,
   };
 }

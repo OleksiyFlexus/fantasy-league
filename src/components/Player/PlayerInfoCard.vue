@@ -35,7 +35,7 @@ const props = defineProps({ initialFormValues: Object });
     text-align: center;
     text-transform: uppercase;
     -webkit-line-clamp: 1;
-    max-width: 90px;
+    max-width: 100px;
 
 }
 
