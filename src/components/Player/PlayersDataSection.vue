@@ -124,7 +124,6 @@ const handlePhotoUpload = (event) => {
 .data__barSection {
     display: flex;
     align-items: center;
-    padding: 10px 0;
     gap: 25px;
     font-size: 16px;
     font-weight: 600;

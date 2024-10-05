@@ -7,17 +7,10 @@
             <h1>Список гравців Fantasy League </h1>
         </div>
     </div>
-    <div class="search__section">
-        <SearchBar />
-    </div>
-
 
 </template>
 
 <script setup>
-import SearchBar from '@/components/SearchBar.vue';
-
-
 </script>
 
 <style scoped>
@@ -26,7 +19,7 @@ import SearchBar from '@/components/SearchBar.vue';
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
 }
 
 .logo__section {
@@ -41,14 +34,6 @@ import SearchBar from '@/components/SearchBar.vue';
     align-items: center;
     font-size: 38px;
     font-weight: 600;
-}
-
-.search__section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding-top: 15px;
 }
 
 .main__logo {

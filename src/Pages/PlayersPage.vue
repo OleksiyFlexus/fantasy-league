@@ -1,7 +1,8 @@
 <template>
     <router-view></router-view>
-    <div>
+    <div class="common_container">
         <PlayersMainContent />
+        <SearchBar />
         <PlayersDataSection :players="players" />
         <PlayerTable />
         <DataItemsList :players="players" />
@@ -15,6 +16,7 @@ import DataItemsList from '@/components/DataItemsList.vue';
 import PlayersMainContent from '@/components/Player/PlayersMainContent.vue';
 import PlayerTable from '@/components/ComonTableHeader.vue';
 import { findAllPlayerInDb } from '@/api/player';
+import SearchBar from '@/components/SearchBar.vue';
 
 const players = ref([]);
 
