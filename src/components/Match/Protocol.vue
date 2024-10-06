@@ -41,7 +41,7 @@
 .protocolSection::before {
     content: '';
     position: absolute;
-    bottom: 155px;
+    bottom: 57px;
     height: 300px;
     width: 2px;
     background: #4d4949;
@@ -50,7 +50,6 @@
 }
 
 .protocolHeader {
-    padding-top: 25px;
     display: flex;
     justify-content: center;
     align-items: center;

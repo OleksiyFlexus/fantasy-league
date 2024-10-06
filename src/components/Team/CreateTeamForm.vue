@@ -46,7 +46,7 @@ const handleLogoUpload = (event) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 15px;
+    gap: 5px;
 }
 
 .form__inputSection input[type="file"] {
