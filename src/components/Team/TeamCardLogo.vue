@@ -1,26 +1,39 @@
 <template>
-    <div class="image__section">
-        <slot />
+    <div class="teamCardSection">
+        <div class="teamLogoSection">
+            <img src="@/assets/images/DefaultTeamLogo.png" alt="team logo">
+        </div>
+        <div class="teamNameSection">
+            <span>Abrikos olegovich</span>
+        </div>
     </div>
+
 </template>
 
 <script setup>
-const props = defineProps({
-    imageUrl: String
-});
 
 </script>
 
 <style scoped>
-.image__section {
-    position: relative;
+.teamCardSection {
     display: flex;
     align-items: center;
-    justify-content: center;
+    padding: 5px;
+    background-color: #cecece31;
+    border-radius: 20px;
+    gap: 25px;
 }
 
-.image__section img {
-    height: 180px;
-    width: auto;
+.teamLogoSection {
+    display: flex;
+    max-width: 75px;
+    height: auto;
+}
+
+.teamNameSection {
+    display: flex;
+    text-align: center;
+    font-size: 26px;
+    text-transform: capitalize;
 }
 </style>

@@ -2,16 +2,18 @@
     <router-view></router-view>
     <div class="common_container">  
         <SearchBar placeholder-text="Пошук команди"/>
-        <TeamsDataSection />
+        <CreateTeamSection />
         <TeamsTable />
+        <TeamCardLogo />
     </div>
 
 </template>
 
 <script setup>
 import SearchBar from '@/components/SearchBar.vue';
-import TeamsDataSection from '@/components/team/TeamsDataSection.vue';
+import CreateTeamSection from '@/components/team/CreateTeamSection.vue';
 import TeamsTable from '@/components/TableHeader.vue'
+import TeamCardLogo from '@/components/team/TeamCardLogo.vue';
 
 
 

@@ -18,7 +18,7 @@
 
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
-import { useModalWindow } from '@/helpers/useModalWindow'
+import { useModalWindow } from '@/helpers/useModalWindow';
 import { createPlayerInDb, findAllPlayerInDb } from '@/api/player.js';
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
 import { firestoreDb } from '@/firebase';
@@ -30,6 +30,9 @@ import PlayerCard from './PlayerCard.vue';
 import SaveButton from '../SaveButton.vue';
 import CloseButton from '../CloseButton.vue';
 
+
+const emit = defineEmits(['player-created']);
+
 const players = ref([]);
 
 let initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
@@ -39,17 +42,12 @@ const { isModalActive, openModal, closeModal } = useModalWindow();
 const close = () => {
     Object.assign(initialFormValues, { name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
     closeModal();
-}
+};
 
 const createPlayer = async () => {
     if (initialFormValues.surname && initialFormValues.number) {
         try {
-            const playerData = {
-                name: initialFormValues.name,
-                surname: initialFormValues.surname,
-                number: initialFormValues.number,
-                photo: ''
-            };
+            const playerData = { name: initialFormValues.name, surname: initialFormValues.surname, number: initialFormValues.number, photo: '' };
             const playerId = await createPlayerInDb(playerData);
 
             if (initialFormValues.file) {
@@ -76,11 +74,12 @@ const createPlayer = async () => {
                 });
                 await updatePlayerPhoto(playerId, photoUrl);
             }
+            emit('player-created', playerData);
 
             await findAllPlayers();
             close();
         } catch (error) {
-            console.error('Ошибка при создании игрока:', error);
+            console.error('Помилка при створенні гравця:', error);
         }
     } else {
         console.log('Заповніть данні гравця');
@@ -92,7 +91,7 @@ const updatePlayerPhoto = async (playerId, photoUrl) => {
         const playerDocRef = doc(firestoreDb, 'players', playerId);
         await updateDoc(playerDocRef, { photo: photoUrl });
     } catch (error) {
-        console.error('Ошибка при обновлении фото игрока:', error);
+        console.error('Помилка при оновленні фото гравця:', error);
     }
 };
 
@@ -100,7 +99,7 @@ const changeFormValue = (type, value) => {
     if (type in initialFormValues) {
         if (type === 'number') {
             if (value === 0) {
-                return
+                return;
             }
             if (value.length <= 2) {
                 initialFormValues[type] = value;
@@ -117,14 +116,12 @@ const findAllPlayers = async () => {
         if (playerDocs.empty) {
             console.log('Гравців не знайдено в БД');
         } else {
-
-            players.value = playerDocs.map(doc => (
-                doc));
+            players.value = playerDocs.map((doc) => doc);
         }
     } catch (error) {
-        console.error("Помилка при завантаженні данних гравців:", error);
+        console.error('Помилка при завантаженні данних гравців:', error);
     }
-}
+};
 
 onMounted(async () => {
     await findAllPlayers();
@@ -138,6 +135,7 @@ const handlePhotoUpload = (event) => {
 };
 
 </script>
+
 
 <style scoped>
 .data__barSection {

@@ -7,6 +7,7 @@ import NotFoundPage from "@/pages/NotFoundPage.vue";
 import MatchPage from "@/pages/MatchPage.vue";
 
 const routes = [
+  { path: "/", component: HomePage },
   { path: "/home", component: HomePage },
   { path: "/match", component: MatchPage },
   { path: "/players", component: PlayersPage },

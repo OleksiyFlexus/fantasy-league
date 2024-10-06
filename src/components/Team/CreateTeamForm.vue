@@ -15,7 +15,7 @@
         </form>
         <div class="team__prewievLogo">
             <img v-if="imageUrl" :src="imageUrl" alt="team logo">
-            <img v-else src="../../assets/images/DefaultTeamLogo.png" alt="default team logo">
+            <img v-else src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
         </div>
     </div>
 </template>

@@ -6,7 +6,6 @@
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <CreateTeamForm :initialFormValues="initialFormValues" :handleLogoUpload="handleLogoUpload" />
-            <TeamCardLogo />
             <div class="button__container">
                 <CloseButton @click="closeModal" />
                 <SaveButton @click="createTeam" />
@@ -27,7 +26,6 @@ import CreateTeamForm from './CreateTeamForm.vue';
 import AddButton from '../AddButton.vue';
 import CloseButton from '../CloseButton.vue';
 import SaveButton from '../SaveButton.vue';
-import TeamCardLogo from './TeamCardLogo.vue';
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
 

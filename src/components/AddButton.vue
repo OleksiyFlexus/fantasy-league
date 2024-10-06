@@ -10,7 +10,7 @@ import { defineProps } from 'vue'
 const props = defineProps({
     buttonText: {
         type: String,
-        default: 'Додати гравця'
+        default: 'Створити гравця'
     }
 });
 

@@ -59,7 +59,7 @@ const props = defineProps({ player: Object });
 .player__nameSection {
     display: flex;
     flex-direction: column;
-    max-width: 108px;
+    max-width: 113px;
     gap: 2px;
     padding-top: 20px;
 }

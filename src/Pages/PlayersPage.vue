@@ -3,8 +3,8 @@
   <div class="common_container">
     <PlayersMainContent />
     <SearchBar />
-    <CreatePlayersSection :players="players" />
-    <TableHeader />
+    <CreatePlayersSection :players="players" @player-created="addPlayerToList" />
+    <PlayersHeader />
     <DataBaseItemsList :players="players" />
   </div>
 </template>
@@ -13,7 +13,7 @@
 import { ref, onMounted } from 'vue';
 import { findAllPlayerInDb } from '@/api/player';
 import PlayersMainContent from '@/components/player/PlayersMainContent.vue';
-import TableHeader from '@/components/TableHeader.vue';
+import PlayersHeader from '@/components/TableHeader.vue';
 import CreatePlayersSection from '@/components/player/CreatePlayersSection.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 import SearchBar from '@/components/SearchBar.vue';
@@ -26,17 +26,18 @@ const findAllPlayers = async () => {
     if (playerDocs.empty) {
       console.log('Гравців не знайдено в БД');
     } else {
-
-      players.value = playerDocs.map(doc => (
-        doc));
+      players.value = playerDocs.map(doc => doc);
     }
   } catch (error) {
     console.error("Помилка при завантаженні данних гравців:", error);
   }
-}
+};
+
+const addPlayerToList = (newPlayer) => {
+  players.value.push(newPlayer);
+};
 
 onMounted(async () => {
   await findAllPlayers();
 });
-
 </script>
