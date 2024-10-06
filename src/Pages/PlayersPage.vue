@@ -1,34 +1,42 @@
 <template>
-    <router-view></router-view>
-    <div class="common_container">
-        <PlayersMainContent />
-        <SearchBar />
-        <CreatePlayersSection :players="players" />
-        <TableHeader />
-        <DataBaseItemsList :players="players" />
-    </div>
+  <router-view></router-view>
+  <div class="common_container">
+    <PlayersMainContent />
+    <SearchBar />
+    <CreatePlayersSection :players="players" />
+    <TableHeader />
+    <DataBaseItemsList :players="players" />
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { findAllPlayerInDb } from '@/api/player';
-import PlayersMainContent from '@/components/Player/PlayersMainContent.vue';
+import PlayersMainContent from '@/components/player/PlayersMainContent.vue';
 import TableHeader from '@/components/TableHeader.vue';
-import CreatePlayersSection from '@/components/Player/CreatePlayersSection.vue';
+import CreatePlayersSection from '@/components/player/CreatePlayersSection.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 import SearchBar from '@/components/SearchBar.vue';
 
 const players = ref([]);
 
-const fetchPlayers = async () => {
+const findAllPlayers = async () => {
   try {
     const playerDocs = await findAllPlayerInDb();
-    players.value = playerDocs.map(doc => doc);
-  } catch (error) {
-    console.error('Помилка при завантаженні гравців:', error);
-  }
-};
+    if (playerDocs.empty) {
+      console.log('Гравців не знайдено в БД');
+    } else {
 
-onMounted(fetchPlayers);
+      players.value = playerDocs.map(doc => (
+        doc));
+    }
+  } catch (error) {
+    console.error("Помилка при завантаженні данних гравців:", error);
+  }
+}
+
+onMounted(async () => {
+  await findAllPlayers();
+});
 
 </script>

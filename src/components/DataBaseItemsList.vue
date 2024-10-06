@@ -10,7 +10,7 @@
   </template>
   
   <script setup>
-  import PlayerListItem from './Player/PlayerListItem.vue';
+  import PlayerListItem from './player/PlayerListItem.vue';
   const props = defineProps({ players: Array });
   </script>
   

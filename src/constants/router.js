@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomePage from "@/Pages/HomePage.vue";
-import PlayersPage from "@/Pages/PlayersPage.vue";
-import TeamsPage from "@/Pages/TeamsPage.vue";
-import NotFoundPage from "@/Pages/NotFoundPage.vue";
-import MatchPage from "@/Pages/MatchPage.vue";
+import HomePage from "@/pages/HomePage.vue";
+import PlayersPage from "@/pages/PlayersPage.vue";
+import TeamsPage from "@/pages/TeamsPage.vue";
+import NotFoundPage from "@/pages/NotFoundPage.vue";
+import MatchPage from "@/pages/MatchPage.vue";
 
 const routes = [
   { path: "/home", component: HomePage },

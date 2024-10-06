@@ -17,9 +17,9 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import {useModalWindow } from '@/helpers/useModalWindow'
-import { createPlayerInDb } from '@/api/player.js';
+import { reactive, ref, onMounted } from 'vue';
+import { useModalWindow } from '@/helpers/useModalWindow'
+import { createPlayerInDb, findAllPlayerInDb } from '@/api/player.js';
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
 import { firestoreDb } from '@/firebase';
 import { doc, updateDoc } from '@firebase/firestore';
@@ -30,14 +30,9 @@ import PlayerCard from './PlayerCard.vue';
 import SaveButton from '../SaveButton.vue';
 import CloseButton from '../CloseButton.vue';
 
-const props = defineProps({
-    players: {
-        type: Array,
-        required: true,
-    }
-});
+const players = ref([]);
 
-const initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
+let initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
 
@@ -67,7 +62,7 @@ const createPlayer = async () => {
                         'state_changed',
                         (snapshot) => {
                             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log(`Завантаження ${progress}% успішно`);
+                            console.log(`Upload is ${progress}% done`);
                         },
                         (error) => {
                             reject(error);
@@ -82,9 +77,10 @@ const createPlayer = async () => {
                 await updatePlayerPhoto(playerId, photoUrl);
             }
 
+            await findAllPlayers();
             close();
         } catch (error) {
-            console.error('Помилка при створенні гравця:', error);
+            console.error('Ошибка при создании игрока:', error);
         }
     } else {
         console.log('Заповніть данні гравця');
@@ -96,26 +92,49 @@ const updatePlayerPhoto = async (playerId, photoUrl) => {
         const playerDocRef = doc(firestoreDb, 'players', playerId);
         await updateDoc(playerDocRef, { photo: photoUrl });
     } catch (error) {
-        console.error('Помилка при оновленні фото гравця:', error);
+        console.error('Ошибка при обновлении фото игрока:', error);
     }
 };
 
 const changeFormValue = (type, value) => {
     if (type in initialFormValues) {
-        if (type === 'number' && value.length > 2) {
-            initialFormValues[type] = value.slice(0, 2);
-        } else {
-            initialFormValues[type] = value;
+        if (type === 'number') {
+            if (value === 0) {
+                return
+            }
+            if (value.length <= 2) {
+                initialFormValues[type] = value;
+            } else {
+                initialFormValues[type] = value.slice(0, 2);
+            }
         }
     }
 };
 
+const findAllPlayers = async () => {
+    try {
+        const playerDocs = await findAllPlayerInDb();
+        if (playerDocs.empty) {
+            console.log('Гравців не знайдено в БД');
+        } else {
+
+            players.value = playerDocs.map(doc => (
+                doc));
+        }
+    } catch (error) {
+        console.error("Помилка при завантаженні данних гравців:", error);
+    }
+}
+
+onMounted(async () => {
+    await findAllPlayers();
+});
+
 const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
-    props.initialFormValues.file = file;
-    props.initialFormValues.fileName = file.name;
+    initialFormValues.file = file;
+    initialFormValues.fileName = file.name;
 };
 
 </script>
@@ -134,5 +153,4 @@ const handlePhotoUpload = (event) => {
     justify-content: center;
     gap: 20px;
 }
-
 </style>

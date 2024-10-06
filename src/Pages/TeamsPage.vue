@@ -10,7 +10,7 @@
 
 <script setup>
 import SearchBar from '@/components/SearchBar.vue';
-import TeamsDataSection from '@/components/Team/TeamsDataSection.vue';
+import TeamsDataSection from '@/components/team/TeamsDataSection.vue';
 import TeamsTable from '@/components/TableHeader.vue'
 
 

@@ -33,13 +33,3 @@ export const findAllPlayerInDb = async () => {
     console.error("Помилка при отриманні данних", error);
   }
 };
-
-export const fetchPlayers = async () => {
-  try {
-    const playerDocs = await findAllPlayerInDb();
-    return playerDocs.map(doc => doc); 
-  } catch (error) {
-    console.error('Помилка при завантаженні гравців:', error);
-    return [];
-  }
-};
