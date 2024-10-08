@@ -3,7 +3,7 @@
   <div class="common_container">
     <PlayersMainContent />
     <SearchBar @update:search="handleSearch" />
-    <CreatePlayersSection :players="players" @player-created="addPlayerToList" />
+    <CreatePlayersSection :search-query="searchQuery" @player-created="addPlayerToList" />
     <PlayersHeader />
     <DataBaseItemsList :items="filteredPlayers" itemType="player" />
   </div>
@@ -40,7 +40,8 @@ const addPlayerToList = (newPlayer) => {
 
 const filteredPlayers = computed(() => {
   return players.value.filter(player =>
-    player.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    (player.name && player.name.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+    (player.surname && player.surname.toLowerCase().includes(searchQuery.value.toLowerCase()))
   );
 });
 

@@ -19,17 +19,16 @@ export const findAllTeamInDb = async () => {
   const collectionName = "teams";
   try {
     const teamCollectionRef = collection(firestoreDb, collectionName);
+    const querySnapshot = await getDocs(query(teamCollectionRef));
 
-    const docRef = await getDocs(query(teamCollectionRef));
-
-    const result = [];
-    docRef.docs.map((el) => result.push({...el.data(), id: el.id}));
-    if (result.length) {
-      console.log("Команди знайдені");
-    } else console.log("Не знайдено жодної команди");
+    const result = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
 
     return result;
   } catch (error) {
-    console.error("Помилка при отриманні данних", error);
+    console.error("Помилка при отриманні даних:", error);
+    return []; // Возвращаем пустой массив при ошибке
   }
 };

@@ -19,14 +19,9 @@ export const findAllPlayerInDb = async () => {
   const collectionName = "players";
   try {
     const playersCollectionRef = collection(firestoreDb, collectionName);
-
     const docRef = await getDocs(query(playersCollectionRef));
 
-    const result = [];
-    docRef.docs.map((el) => result.push({...el.data(), id: el.id}));
-    if (result.length) {
-      console.log("Гравці знайдені");
-    } else console.log("Не знайдено жодного гравця");
+    const result = docRef.docs.map((el) => ({ ...el.data(), id: el.id }));
 
     return result;
   } catch (error) {

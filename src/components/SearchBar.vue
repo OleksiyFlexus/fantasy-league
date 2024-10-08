@@ -1,7 +1,8 @@
 <template>
     <div class="search__barSection">
         <div class="search__bar">
-            <input type="text" v-model="input" @input="onInput" :placeholder="placeholderText" class="search__input" />
+            <input type="text" v-model="input" :placeholder="placeholderText" class="search__input"
+                @input="emitSearch" />
         </div>
         <div class="searchBar__button">
             <SearchIcon />
@@ -10,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits, defineProps } from 'vue';
 import { SearchIcon } from '@/constants/importIcons.js';
 
 const props = defineProps({
@@ -21,10 +22,10 @@ const props = defineProps({
 });
 
 const input = ref('');
-
 const emit = defineEmits(['update:search']);
-const onInput = () => {
-    emit('update:search', input.value.trim() || ''); 
+
+const emitSearch = () => {
+    emit('update:search', input.value);
 };
 </script>
 

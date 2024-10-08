@@ -1,8 +1,8 @@
 <template>
     <router-view></router-view>
     <div class="common_container">  
-        <SearchBar @update:search="handleSearch" placeholder-text="Пошук команди" />
-        <CreateTeamSection :teams="teams" @team-created="addTeamToList" />
+        <SearchBar placeholderText="Пошук команд" @update:search="handleSearch" />
+        <CreateTeamSection :search-query="searchQuery" @team-created="addTeamToList" />
         <TeamsTable />
         <DataBaseItemsList :items="filteredTeams" itemType="team" />
     </div>
@@ -17,16 +17,12 @@ import TeamsTable from '@/components/TableHeader.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 
 const teams = ref([]);
-const searchQuery = ref('');
+const searchQuery = ref(''); 
 
 const findAllTeams = async () => {
   try {
-    const teamDocs = await findAllTeamInDb();
-    if (teamDocs.empty) {
-      console.log('Команди не знайдено в БД');
-    } else {
-      teams.value = teamDocs.map(doc => doc);
-    }
+    const teamsFromDb = await findAllTeamInDb();
+    teams.value = teamsFromDb; 
   } catch (error) {
     console.error("Помилка при завантаженні даних команд:", error);
   }
@@ -37,20 +33,16 @@ const addTeamToList = (newTeam) => {
 };
 
 const filteredTeams = computed(() => {
-  return teams.value.filter(teamName => 
-    teamName.name && teamName.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  return teams.value.filter(team => 
+    team.teamName && team.teamName.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
 
 const handleSearch = (query) => {
-  searchQuery.value = query;
+  searchQuery.value = query; 
 };
 
 onMounted(async () => {
   await findAllTeams();
 });
 </script>
-
-<style scoped>
-
-</style>

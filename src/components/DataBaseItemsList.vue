@@ -1,8 +1,10 @@
 <template>
   <div class="playerList__container">
-    <div v-if="items.length" v-for="item in items" :key="item.id" class="table__items">
-      <PlayerListItem v-if="itemType === 'player'" :player="item" />
-      <TeamListItem v-else-if="itemType === 'team'" :team="item" />
+    <div v-if="items.length">
+      <div v-for="item in items" :key="item.id" class="table__items">
+        <PlayerListItem v-if="itemType === 'player'" :player="item" />
+        <TeamListItem v-else-if="itemType === 'team'" :team="item" />
+      </div>
     </div>
     <div v-else class="table__items">
       <h1>Жодного елемента не знайдено</h1>

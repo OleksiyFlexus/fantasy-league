@@ -6,8 +6,7 @@
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <PlayerCard :initialFormValues="initialFormValues" />
-            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
-                :handlePhotoUpload="handlePhotoUpload" />
+            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue" :handlePhotoUpload="handlePhotoUpload" />
             <div class="button__container">
                 <CloseButton @click="close" />
                 <SaveButton @click="createPlayer" />
@@ -29,7 +28,6 @@ import CreatePlayerForm from './CreatePlayerForm.vue';
 import PlayerCard from './PlayerCard.vue';
 import SaveButton from '../SaveButton.vue';
 import CloseButton from '../CloseButton.vue';
-
 
 const emit = defineEmits(['player-created']);
 
@@ -138,7 +136,7 @@ const handlePhotoUpload = (event) => {
 </script>
 
 
-<style scoped>
+<style>
 .data__barSection {
     display: flex;
     align-items: center;

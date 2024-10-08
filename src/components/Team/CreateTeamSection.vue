@@ -2,7 +2,7 @@
     <div>
         <div class="data__barSection">
             <AddButton button-text="Додати команду" @click="openModal" />
-            <p>Показано результатів: {{ teams.length }}</p>
+            <p>Показано результатів: {{ teams.length }} </p>
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <CreateTeamForm :initialFormValues="initialFormValues" :handleLogoUpload="handleLogoUpload" />
@@ -28,8 +28,6 @@ import CloseButton from '../CloseButton.vue';
 import SaveButton from '../SaveButton.vue';
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
-
-const emit = defineEmits(['team-created']);
 
 const teams = ref([]);
 
@@ -95,14 +93,10 @@ const updateTeamLogo = async (teamId, logoUrl) => {
 
 const findAllTeams = async () => {
     try {
-        const teamDocs = await findAllTeamInDb();
-        if (teamDocs.empty) {
-            console.log('Команд не знайдено в БД');
-        } else {
-            teams.value = teamDocs.map((doc) => doc);
-        }
+        const teamsFromDb = await findAllTeamInDb();
+        teams.value = teamsFromDb;
     } catch (error) {
-        console.error('Помилка при завантаженні данних команди:', error);
+        console.error("Помилка при завантаженні даних команд:", error);
     }
 };
 
@@ -118,20 +112,3 @@ const handleLogoUpload = (event) => {
 };
 
 </script>
-
-<style scoped>
-
-.data__barSection {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.button__container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-</style>
