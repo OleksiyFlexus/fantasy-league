@@ -2,7 +2,7 @@
     <div>
         <div class="data__barSection">
             <AddButton button-text="Додати команду" @click="openModal" />
-            <p>Показано результатів:</p>
+            <p>Показано результатів: {{ teams.length }}</p>
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <CreateTeamForm :initialFormValues="initialFormValues" :handleLogoUpload="handleLogoUpload" />
@@ -48,7 +48,7 @@ const createTeam = async () => {
 
             if (initialFormValues.file) {
                 const storage = getStorage();
-                const fileRef = storageRef(storage, `teams/${initialFormValues.teamName}_${initialFormValues.logo}`);
+                const fileRef = storageRef(storage, `teams/${initialFormValues.teamName}_${initialFormValues.file.name}`);
                 const uploadTask = uploadBytesResumable(fileRef, initialFormValues.file);
 
                 const logoUrl = await new Promise((resolve, reject) => {
@@ -68,10 +68,12 @@ const createTeam = async () => {
                         }
                     );
                 });
+
+                teamData.logo = logoUrl;
                 await updateTeamLogo(teamId, logoUrl);
             }
-            emit('team-created', teamData);
 
+            emit('team-created', teamData);
             await findAllTeams();
             close();
         } catch (error) {
@@ -131,5 +133,4 @@ const handleLogoUpload = (event) => {
     justify-content: center;
     gap: 20px;
 }
-
 </style>

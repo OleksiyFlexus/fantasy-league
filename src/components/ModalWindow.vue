@@ -72,8 +72,10 @@ const closeModal = () => {
 }
 
 .close-modal-button {
-    background: none;
-    border: none;
+    background-color: #f37676;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
     font-size: 24px;
     cursor: pointer;
 }

@@ -21,6 +21,7 @@ const props = defineProps({ team: Object });
 .teamCardSection {
     display: flex;
     align-items: center;
+    max-height: 75px;
     padding: 5px;
     background-color: #cecece31;
     border-radius: 20px;
@@ -29,8 +30,9 @@ const props = defineProps({ team: Object });
 
 .teamLogoSection {
     display: flex;
-    max-width: 75px;
-    height: auto;
+    padding: 5px;
+    max-height: 75px;
+    width: 75px;
 }
 
 .teamNameSection {

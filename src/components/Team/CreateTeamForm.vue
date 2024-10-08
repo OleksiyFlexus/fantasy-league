@@ -85,6 +85,7 @@ const handleLogoUpload = (event) => {
 }
 
 .form__section img {
+    width: 207px;
     height: 207px;
     object-fit: cover;
 }

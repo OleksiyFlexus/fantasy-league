@@ -72,6 +72,7 @@ const createPlayer = async () => {
                         }
                     );
                 });
+                playerData.photo = photoUrl;
                 await updatePlayerPhoto(playerId, photoUrl);
             }
             emit('player-created', playerData);
