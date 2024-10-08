@@ -1,16 +1,19 @@
 <template>
     <div class="teamCardSection">
         <div class="teamLogoSection">
-            <img src="@/assets/images/DefaultTeamLogo.png" alt="team logo">
+            <img v-if="team.logo" :src="team.logo" alt="team logo">
+            <img v-else src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
         </div>
         <div class="teamNameSection">
-            <span>Abrikos olegovich</span>
+            <span>{{ team.teamName }}</span>
         </div>
     </div>
 
 </template>
 
 <script setup>
+
+const props = defineProps({ team: Object });
 
 </script>
 

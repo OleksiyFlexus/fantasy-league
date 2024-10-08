@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import { createTeamInDb } from '@/api/team.js';
+import { reactive, ref, onMounted } from 'vue';
+import { createTeamInDb, findAllTeamInDb } from '@/api/team.js';
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import { firestoreDb } from '@/firebase';
@@ -29,27 +29,21 @@ import SaveButton from '../SaveButton.vue';
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
 
-const props = defineProps({
-    teams: {
-        type: Array,
-        required: true,
-    }
-});
+const emit = defineEmits(['team-created']);
 
-const initialFormValues = reactive({ teamName: '', logo: '', logoRef: {}, logoName: '' });
+const teams = ref([]);
+
+let initialFormValues = reactive({ teamName: '', logo: '', logoRef: {}, logoName: '' });
 
 const close = () => {
     Object.assign(initialFormValues, { teamName: '', logo: '', logoRef: {}, logoName: '' });
-    closeModal();   
-}
+    closeModal();
+};
 
 const createTeam = async () => {
     if (initialFormValues.teamName) {
         try {
-            const teamData = {
-                teamName: initialFormValues.teamName,
-                logo: ''
-            };
+            const teamData = { teamName: initialFormValues.teamName, logo: '' };
             const teamId = await createTeamInDb(teamData);
 
             if (initialFormValues.file) {
@@ -62,7 +56,7 @@ const createTeam = async () => {
                         'state_changed',
                         (snapshot) => {
                             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log(`Завантаження ${progress}% успішно`);
+                            console.log(`Upload is ${progress}% done`);
                         },
                         (error) => {
                             reject(error);
@@ -76,7 +70,9 @@ const createTeam = async () => {
                 });
                 await updateTeamLogo(teamId, logoUrl);
             }
+            emit('team-created', teamData);
 
+            await findAllTeams();
             close();
         } catch (error) {
             console.error('Помилка при створенні команди:', error);
@@ -95,12 +91,28 @@ const updateTeamLogo = async (teamId, logoUrl) => {
     }
 };
 
+const findAllTeams = async () => {
+    try {
+        const teamDocs = await findAllTeamInDb();
+        if (teamDocs.empty) {
+            console.log('Команд не знайдено в БД');
+        } else {
+            teams.value = teamDocs.map((doc) => doc);
+        }
+    } catch (error) {
+        console.error('Помилка при завантаженні данних команди:', error);
+    }
+};
+
+onMounted(async () => {
+    await findAllTeams();
+});
+
 const handleLogoUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
-    props.initialFormValues.file = file;
-    props.initialFormValues.fileName = file.name;
+    initialFormValues.file = file;
+    initialFormValues.fileName = file.name;
 };
 
 </script>

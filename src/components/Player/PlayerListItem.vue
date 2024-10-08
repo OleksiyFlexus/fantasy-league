@@ -5,7 +5,7 @@
                 <p class="player__cardName">{{ player.surname }}</p>
                 <p class="player__Number">{{ player.number }}</p>
                     <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
-                    <img v-else class="player__photo" src="../../assets/images/UndefinePhoto.png" alt="player photo">
+                    <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
             </div>
             <div class="player__nameSection">
                 <p class="playerName">{{ player.name }}</p>

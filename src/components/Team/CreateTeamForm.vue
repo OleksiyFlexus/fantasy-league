@@ -3,7 +3,7 @@
         <h2>Заповніть поля</h2>
         <form @submit.prevent="createTeam">
             <div class="form__inputSection">
-                <input type="text" placeholder="введіть назву команди" required>
+                <input type="text" placeholder="введіть назву команди" v-model="initialFormValues.teamName" required />
                 <div class="buttonSection">
                     <input type="file" id="fileUpload" @change="handleLogoUpload" />
                     <label for="fileUpload">Завантажити логотип</label>
@@ -13,22 +13,30 @@
                 </div>
             </div>
         </form>
-        <div class="team__prewievLogo">
-            <img v-if="imageUrl" :src="imageUrl" alt="team logo">
-            <img v-else src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
+        <div class="team__previewLogo">
+            <img v-if="imageUrl" :src="imageUrl" alt="team logo" />
+            <img v-else src="@/assets/images/DefaultTeamLogo.png" alt="default team logo" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { UploadIcon } from '@/constants/importIcons';
 
-const imageUrl = ref(null);
-const initialFormValues = ref({
-    file: null,
-    fileName: ''
+const props = defineProps({
+    initialFormValues: {
+        type: Object,
+        required: true,
+    },
+    handleLogoUpload: {
+        type: Function,
+        required: true,
+    },
 });
+
+const { initialFormValues } = toRefs(props);
+const imageUrl = ref(null);
 
 const handleLogoUpload = (event) => {
     const file = event.target.files[0];
@@ -77,8 +85,7 @@ const handleLogoUpload = (event) => {
 }
 
 .form__section img {
-    height: auto;
-    width: 250px;
+    height: 207px;
     object-fit: cover;
 }
 
@@ -88,6 +95,7 @@ const handleLogoUpload = (event) => {
     align-items: center;
     gap: 2px;
 }
+
 .buttonSection span {
     display: flex;
     justify-content: center;
@@ -98,10 +106,9 @@ const handleLogoUpload = (event) => {
     border-radius: 5px;
 }
 
-.team__prewievLogo {
+.team__previewLogo {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    align-items:center;
+    justify-content: center;
 }
 </style>

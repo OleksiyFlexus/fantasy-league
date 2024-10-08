@@ -5,7 +5,7 @@
     <SearchBar />
     <CreatePlayersSection :players="players" @player-created="addPlayerToList" />
     <PlayersHeader />
-    <DataBaseItemsList :players="players" />
+    <DataBaseItemsList :items="players" item-type="player" />
   </div>
 </template>
 
