@@ -16,9 +16,11 @@
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Protest+Strike&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+
 .tableHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #1a19192d;
     width: 100%;
     height: 60px;
@@ -30,7 +32,10 @@
     align-items: center;
     text-align: center;
     gap: 90px;
-
+    font-family: "Yanone Kaffeesatz", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 19px;
 }
 
 .tableItems::before {

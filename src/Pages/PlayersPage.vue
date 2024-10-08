@@ -2,15 +2,15 @@
   <router-view></router-view>
   <div class="common_container">
     <PlayersMainContent />
-    <SearchBar />
+    <SearchBar @update:search="handleSearch" />
     <CreatePlayersSection :players="players" @player-created="addPlayerToList" />
     <PlayersHeader />
-    <DataBaseItemsList :items="players" item-type="player" />
+    <DataBaseItemsList :items="filteredPlayers" itemType="player" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { findAllPlayerInDb } from '@/api/player';
 import PlayersMainContent from '@/components/player/PlayersMainContent.vue';
 import PlayersHeader from '@/components/TableHeader.vue';
@@ -19,6 +19,7 @@ import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 import SearchBar from '@/components/SearchBar.vue';
 
 const players = ref([]);
+const searchQuery = ref('');
 
 const findAllPlayers = async () => {
   try {
@@ -35,6 +36,16 @@ const findAllPlayers = async () => {
 
 const addPlayerToList = (newPlayer) => {
   players.value.push(newPlayer);
+};
+
+const filteredPlayers = computed(() => {
+  return players.value.filter(player =>
+    player.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+const handleSearch = (query) => {
+  searchQuery.value = query;
 };
 
 onMounted(async () => {

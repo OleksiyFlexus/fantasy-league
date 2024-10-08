@@ -17,6 +17,8 @@ const props = defineProps({
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
 .addBtn {
     display: inline-block;
     border-radius: 4px;
@@ -29,6 +31,9 @@ const props = defineProps({
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .addBtn span {

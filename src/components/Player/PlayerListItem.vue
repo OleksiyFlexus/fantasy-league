@@ -1,32 +1,32 @@
 <template>
-        <div class="player__items">
-            <div class="player__cardSection">
-                <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
-                <p class="player__cardName">{{ player.surname }}</p>
-                <p class="player__Number">{{ player.number }}</p>
-                    <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
-                    <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
+    <div class="player__items">
+        <div class="player__cardSection">
+            <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
+            <p class="player__cardName">{{ player.surname }}</p>
+            <p class="player__Number">{{ player.number }}</p>
+            <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
+            <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
+        </div>
+        <div class="player__nameSection">
+            <p class="playerName">{{ player.name }}</p>
+            <p class="playerSurname">{{ player.surname }}</p>
+            <AddButtonToSquad />
+        </div>
+        <div class="player__statSection">
+            <div class="player__statItem">
+                <Games />
+                <span>Матчі</span>
             </div>
-            <div class="player__nameSection">
-                <p class="playerName">{{ player.name }}</p>
-                <p class="playerSurname">{{ player.surname }}</p>
-                <AddButtonToSquad />
+            <div class="player__statItem">
+                <Goals />
+                <span>Голи</span>
             </div>
-            <div class="player__statSection">
-                <div class="player__statItem">
-                    <Games />
-                    <span>Матчі</span>
-                </div>
-                <div class="player__statItem">
-                    <Goals />
-                    <span>Голи</span>
-                </div>
-                <div class="player__statItem">
-                    <Assist />
-                    <span>Ассисти</span>
-                </div>
+            <div class="player__statItem">
+                <Assist />
+                <span>Ассисти</span>
             </div>
         </div>
+    </div>
 
 </template>
 
@@ -60,8 +60,9 @@ const props = defineProps({ player: Object });
     display: flex;
     flex-direction: column;
     max-width: 113px;
-    gap: 2px;
-    padding-top: 20px;
+    gap: 3px; 
+    padding-top: 15px;
+
 }
 
 .playerName {
@@ -71,6 +72,7 @@ const props = defineProps({ player: Object });
     text-overflow: ellipsis;
     display: block;
     overflow: hidden;
+    height: 19px;
 }
 
 .playerSurname {
@@ -80,7 +82,7 @@ const props = defineProps({ player: Object });
     display: block;
     overflow: hidden;
     font-weight: 700;
-    height: 19px;
+    height: 24px;
 }
 
 .player__cardName {
@@ -131,7 +133,7 @@ const props = defineProps({ player: Object });
 
 .player__statSection {
     display: flex;
-    align-items:flex-start;
+    align-items: flex-start;
     gap: 15px;
     padding: 4px 4px;
 }

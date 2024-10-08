@@ -120,6 +120,7 @@ const handleLogoUpload = (event) => {
 </script>
 
 <style scoped>
+
 .data__barSection {
     display: flex;
     align-items: center;

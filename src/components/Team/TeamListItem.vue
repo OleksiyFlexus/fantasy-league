@@ -5,7 +5,7 @@
             <img v-else src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
         </div>
         <div class="teamNameSection">
-            <span>{{ team.teamName }}</span>
+            <h1>{{ team.teamName }}</h1>
         </div>
     </div>
 
@@ -18,6 +18,8 @@ const props = defineProps({ team: Object });
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap');
+
 .teamCardSection {
     display: flex;
     align-items: center;
@@ -38,7 +40,15 @@ const props = defineProps({ team: Object });
 .teamNameSection {
     display: flex;
     text-align: center;
-    font-size: 26px;
+    font-size: 25px;
     text-transform: capitalize;
+    color: #414122;
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.teamLogoSection img {
+    border-radius: 5px;
 }
 </style>
