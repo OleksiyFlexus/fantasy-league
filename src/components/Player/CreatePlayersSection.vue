@@ -1,12 +1,10 @@
 <template>
     <div>
-        <div class="data__barSection">
-            <AddButton @click="openModal" />
-            <p>Показано результатів: {{ players.length }}</p>
-        </div>
+        <AddButton @click="openModal" />
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <PlayerCard :initialFormValues="initialFormValues" />
-            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue" :handlePhotoUpload="handlePhotoUpload" />
+            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
+                :handlePhotoUpload="handlePhotoUpload" />
             <div class="button__container">
                 <CloseButton @click="close" />
                 <SaveButton @click="createPlayer" />
@@ -137,13 +135,6 @@ const handlePhotoUpload = (event) => {
 
 
 <style>
-.data__barSection {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    font-size: 16px;
-    font-weight: 600;
-}
 
 .button__container {
     display: flex;

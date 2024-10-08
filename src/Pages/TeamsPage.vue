@@ -1,8 +1,11 @@
 <template>
     <router-view></router-view>
-    <div class="common_container">  
+    <div class="common_container">
         <SearchBar placeholderText="Пошук команд" @update:search="handleSearch" />
-        <CreateTeamSection :search-query="searchQuery" @team-created="addTeamToList" />
+        <div class="createItemSection">
+            <CreateTeamSection :search-query="searchQuery" @team-created="addTeamToList" />
+            <p>Показано результатів: {{ filteredTeams.length }}</p>
+        </div>
         <TeamsTable />
         <DataBaseItemsList :items="filteredTeams" itemType="team" />
     </div>
@@ -17,32 +20,46 @@ import TeamsTable from '@/components/TableHeader.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 
 const teams = ref([]);
-const searchQuery = ref(''); 
+const searchQuery = ref('');
 
 const findAllTeams = async () => {
-  try {
-    const teamsFromDb = await findAllTeamInDb();
-    teams.value = teamsFromDb; 
-  } catch (error) {
-    console.error("Помилка при завантаженні даних команд:", error);
-  }
+    try {
+        const teamsFromDb = await findAllTeamInDb();
+        teams.value = teamsFromDb;
+    } catch (error) {
+        console.error("Помилка при завантаженні даних команд:", error);
+    }
 };
 
 const addTeamToList = (newTeam) => {
-  teams.value.push(newTeam);
+    teams.value.push(newTeam);
 };
 
 const filteredTeams = computed(() => {
-  return teams.value.filter(team => 
-    team.teamName && team.teamName.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+    return teams.value.filter(team =>
+        team.teamName && team.teamName.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
 });
 
 const handleSearch = (query) => {
-  searchQuery.value = query; 
+    searchQuery.value = query;
 };
 
 onMounted(async () => {
-  await findAllTeams();
+    await findAllTeams();
 });
 </script>
+
+<style>
+.createItemSection{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.createItemSection p {
+    font-weight: 700;
+}
+
+</style>

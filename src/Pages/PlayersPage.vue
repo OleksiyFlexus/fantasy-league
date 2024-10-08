@@ -3,7 +3,10 @@
   <div class="common_container">
     <PlayersMainContent />
     <SearchBar @update:search="handleSearch" />
-    <CreatePlayersSection :search-query="searchQuery" @player-created="addPlayerToList" />
+    <div class="createItemSection">
+      <CreatePlayersSection :search-query="searchQuery" @player-created="addPlayerToList" />
+      <p>Показано результатів: {{ filteredPlayers.length }}</p>
+    </div>
     <PlayersHeader />
     <DataBaseItemsList :items="filteredPlayers" itemType="player" />
   </div>

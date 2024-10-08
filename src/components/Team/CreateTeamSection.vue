@@ -2,7 +2,6 @@
     <div>
         <div class="data__barSection">
             <AddButton button-text="Додати команду" @click="openModal" />
-            <p>Показано результатів: {{ teams.length }} </p>
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <CreateTeamForm :initialFormValues="initialFormValues" :handleLogoUpload="handleLogoUpload" />
@@ -27,8 +26,10 @@ import AddButton from '../AddButton.vue';
 import CloseButton from '../CloseButton.vue';
 import SaveButton from '../SaveButton.vue';
 
-const { isModalActive, openModal, closeModal } = useModalWindow();
+// Додаємо emit
+const emit = defineEmits(['team-created']);
 
+const { isModalActive, openModal, closeModal } = useModalWindow();
 const teams = ref([]);
 
 let initialFormValues = reactive({ teamName: '', logo: '', logoRef: {}, logoName: '' });
@@ -110,5 +111,4 @@ const handleLogoUpload = (event) => {
     initialFormValues.file = file;
     initialFormValues.fileName = file.name;
 };
-
 </script>

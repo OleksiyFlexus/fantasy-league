@@ -1,12 +1,12 @@
 <template>
-    <div v-if="isActive" class="modal-overlay">
-        <div class="modal-container" :class="{ 'fade-in': isActive, 'fade-out': !isActive }" @click.stop>
-            <div class="modal-header">
+    <div v-if="isActive" class="modal_overlay">
+        <div class="modal_container" :class="{ 'fade_in': isActive, 'fade_out': !isActive }" @click.stop>
+            <div class="modal_header">
                 <slot name="header">
-                    <button @click="closeModal" class="close-modal-button">&times;</button>
+                    <button @click="closeModal" class="close_modal_button">&times;</button>
                 </slot>
             </div>
-            <div class="modal-body">
+            <div class="modal_body">
                 <slot></slot>
             </div>
         </div>
@@ -31,7 +31,7 @@ const closeModal = () => {
 
 <style scoped>
 
-.modal-overlay {
+.modal_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -45,7 +45,7 @@ const closeModal = () => {
     z-index: 99999;
 }
 
-.modal-container {
+.modal_container {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -55,23 +55,23 @@ const closeModal = () => {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.fade-in {
+.fade_in {
     opacity: 1;
     transform: scale(1);
 }
 
-.fade-out {
+.fade_out {
     opacity: 0;
     transform: scale(0.8);
 }
 
-.modal-header {
+.modal_header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.close-modal-button {
+.close_modal_button {
     background-color: #f37676;
     width: 25px;
     height: 25px;
@@ -80,7 +80,7 @@ const closeModal = () => {
     cursor: pointer;
 }
 
-.modal-body {
+.modal_body {
     font-size: 16px;
     color: #333;
     display: flex;
