@@ -24,7 +24,6 @@
     background-color: #1a19192d;
     width: 100%;
     height: 60px;
-    padding: 0 10px;
 }
 
 .tableItems {

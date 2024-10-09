@@ -36,7 +36,7 @@ import AddButtonToSquad from './AddButtonToSquad.vue';
 const props = defineProps({ player: Object });
 </script>
 
-<style scoped>
+<style>
 
 .player__items {
     display: flex;

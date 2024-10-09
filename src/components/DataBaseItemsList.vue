@@ -1,13 +1,16 @@
 <template>
-  <div class="playerList__container">
+  <div class="itemListSection">
     <div v-if="items.length">
-      <div v-for="item in items" :key="item.id" class="table__items">
-        <PlayerListItem v-if="itemType === 'player'" :player="item" />
-        <TeamListItem v-else-if="itemType === 'team'" :team="item" />
+      <div class="itemList">
+        <div v-for="item in items" :key="item.id">
+          <PlayerListItem v-if="itemType === 'player'" :player="item" />
+          <TeamListItem v-else-if="itemType === 'team'" :team="item" />
+        </div>
       </div>
     </div>
-    <div v-else class="table__items">
-      <h1>Жодного елемента не знайдено</h1>
+    <div v-else>
+      <h1 v-if="itemType === 'team'">Жодної команди не знайдено</h1>
+      <h1 v-else>Жодного гравця не знайдено</h1>
     </div>
   </div>
 </template>
@@ -30,13 +33,19 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.playerList__container {
+.itemListSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemList {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
 }
 
-.table__items h1 {
+.itemList h1 {
   margin: 10px;
   font-size: 18px;
   font-weight: 700;

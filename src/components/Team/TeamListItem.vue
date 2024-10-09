@@ -27,7 +27,7 @@ const props = defineProps({ team: Object });
     padding: 5px;
     background-color: #cecece31;
     border-radius: 20px;
-    gap: 25px;
+    gap: 15px;
 }
 
 .teamLogoSection {
