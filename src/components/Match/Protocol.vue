@@ -5,26 +5,42 @@
     <div class="protocolSection">
         <div class="leftProtocolSection">
             <div class="leftTeamLogo">
-                <img src="@/assets/images/DefaultTeamLogo.png" alt="default logo">
+                <img :src="leftTeam.logo || defaultLogo" alt="default logo">
             </div>
             <div class="leftTeamName">
-                <p>LEFT TEAM name</p>
+                <p>{{ leftTeam.teamName || 'Левая команда' }}</p>
             </div>
         </div>
         <div class="rightProtocolSection">
             <div class="rightTeamName">
-                <p>Right team name</p>
+                <p>{{ rightTeam.teamName || 'Правая команда' }}</p>
             </div>
             <div class="rightTeamLogo">
-                <img src="@/assets/images/DefaultTeamLogo.png" alt="default logo">
+                <img :src="rightTeam.logo || defaultLogo" alt="default logo">
             </div>
         </div>
-
     </div>
 </template>
 
 <script setup>
+import { ref, watch, defineProps } from 'vue';
+import defaultLogo from '@/assets/images/DefaultTeamLogo.png';
 
+const props = defineProps({
+    leftTeam: Object,
+    rightTeam: Object,
+});
+
+const leftTeam = ref({});
+const rightTeam = ref({});
+
+watch(() => props.leftTeam, (newValue) => {
+    leftTeam.value = newValue || {};
+});
+
+watch(() => props.rightTeam, (newValue) => {
+    rightTeam.value = newValue || {};
+});
 </script>
 
 <style scoped>
@@ -41,7 +57,7 @@
 .protocolSection::before {
     content: '';
     position: absolute;
-    bottom: 57px;
+    bottom: 56px;
     height: 300px;
     width: 2px;
     background: #4d4949;

@@ -9,7 +9,11 @@
                 <CloseButton @click="close" />
                 <SaveButton @click="createPlayer" />
             </div>
+            <div v-if="error" class="error_message">
+                {{ error }}
+            </div>
         </ModalWindow>
+        <NotificationWindow :message="notificationMessage" :visible="showNotification"/>
     </div>
 </template>
 
@@ -26,10 +30,14 @@ import CreatePlayerForm from './CreatePlayerForm.vue';
 import PlayerCard from './PlayerCard.vue';
 import SaveButton from '../SaveButton.vue';
 import CloseButton from '../CloseButton.vue';
+import NotificationWindow from '../NotificationWindow.vue';
 
 const emit = defineEmits(['player-created']);
+const showNotification = ref(false);
+const notificationMessage = ref ('');
 
 const players = ref([]);
+const error = ref(null);
 
 let initialFormValues = reactive({ name: '', surname: '', number: '', photo: '', photoRef: {}, photoName: '' });
 
@@ -48,7 +56,7 @@ const createPlayer = async () => {
 
             if (initialFormValues.file) {
                 const storage = getStorage();
-                const fileRef = storageRef(storage, `players/${initialFormValues.name}_${initialFormValues.surname}_${initialFormValues.number}_${initialFormValues.photo}`);
+                const fileRef = storageRef(storage, `players/${initialFormValues.name} ${initialFormValues.surname} ${initialFormValues.number} ${initialFormValues.photo}`);
                 const uploadTask = uploadBytesResumable(fileRef, initialFormValues.file);
 
                 const photoUrl = await new Promise((resolve, reject) => {
@@ -73,13 +81,16 @@ const createPlayer = async () => {
             }
             emit('player-created', playerData);
 
+            notificationMessage.value = `Гравець ${playerData.name} ${playerData.surname} був успішно створений!`;
+            showNotification.value = true;
+
             await findAllPlayers();
             close();
-        } catch (error) {
-            console.error('Помилка при створенні гравця:', error);
+        } catch (err) {
+            error.value = "Помилка при створенні гравця:";
         }
     } else {
-        console.log('Заповніть данні гравця');
+        error.value = "Заповніть данні гравця (фото не обов`язково)";
     }
 };
 
@@ -87,8 +98,8 @@ const updatePlayerPhoto = async (playerId, photoUrl) => {
     try {
         const playerDocRef = doc(firestoreDb, 'players', playerId);
         await updateDoc(playerDocRef, { photo: photoUrl });
-    } catch (error) {
-        console.error('Помилка при оновленні фото гравця:', error);
+    } catch (err) {
+        error.value = "Помилка при оновленні фото гравця:";
     }
 };
 
@@ -111,12 +122,12 @@ const findAllPlayers = async () => {
     try {
         const playerDocs = await findAllPlayerInDb();
         if (playerDocs.empty) {
-            console.log('Гравців не знайдено в БД');
+            error.value = "Гравців не знайдено в БД";
         } else {
             players.value = playerDocs.map((doc) => doc);
         }
     } catch (error) {
-        console.error('Помилка при завантаженні данних гравців:', error);
+        error.value = "Помилка при завантаженні данних гравців:";
     }
 };
 
@@ -135,7 +146,6 @@ const handlePhotoUpload = (event) => {
 
 
 <style>
-
 .button__container {
     display: flex;
     justify-content: center;

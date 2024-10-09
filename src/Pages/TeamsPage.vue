@@ -2,6 +2,9 @@
     <router-view></router-view>
     <div class="common_container">
         <SearchBar placeholderText="Пошук команд" @update:search="handleSearch" />
+        <div v-if="error" class="error_message">
+            {{ error }}
+        </div>
         <div class="createItemSection">
             <CreateTeamSection :search-query="searchQuery" @team-created="addTeamToList" />
             <p>Показано результатів: {{ filteredTeams.length }}</p>
@@ -21,13 +24,15 @@ import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 
 const teams = ref([]);
 const searchQuery = ref('');
+const error = ref(null);
 
 const findAllTeams = async () => {
     try {
         const teamsFromDb = await findAllTeamInDb();
         teams.value = teamsFromDb;
-    } catch (error) {
-        console.error("Помилка при завантаженні даних команд:", error);
+        sessionStorage.setItem('teams', JSON.stringify(teamsFromDb)); // Сохраняем команды в sessionStorage
+    } catch (err) {
+        error.value = "Виникла помилка при завантаженні даних команд. Спробуйте ще раз.";
     }
 };
 

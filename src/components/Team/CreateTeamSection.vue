@@ -9,7 +9,11 @@
                 <CloseButton @click="closeModal" />
                 <SaveButton @click="createTeam" />
             </div>
+            <div v-if="error" class="error_message">
+                {{ error }}
+            </div>
         </ModalWindow>
+        <NotificationWindow :message="notificationMessage" :visible="showNotification"/>
     </div>
 </template>
 
@@ -25,9 +29,12 @@ import CreateTeamForm from './CreateTeamForm.vue';
 import AddButton from '../AddButton.vue';
 import CloseButton from '../CloseButton.vue';
 import SaveButton from '../SaveButton.vue';
+import NotificationWindow from '../NotificationWindow.vue';
 
-// Додаємо emit
 const emit = defineEmits(['team-created']);
+const error = ref(null);
+const showNotification = ref(false);
+const notificationMessage = ref ('');
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
 const teams = ref([]);
@@ -73,13 +80,17 @@ const createTeam = async () => {
             }
 
             emit('team-created', teamData);
+
+            notificationMessage.value = `Командa ${teamData.teamName} була успішно створена!`;
+            showNotification.value = true;
+
             await findAllTeams();
             close();
-        } catch (error) {
-            console.error('Помилка при створенні команди:', error);
+        } catch (err) {
+            error.value = "Помилка при створенні команди";
         }
     } else {
-        console.log('Заповніть данні команди');
+        error.value = "Введіть назву команди (логотип не обов'язково)";
     }
 };
 
@@ -87,8 +98,8 @@ const updateTeamLogo = async (teamId, logoUrl) => {
     try {
         const teamDocRef = doc(firestoreDb, 'teams', teamId);
         await updateDoc(teamDocRef, { logo: logoUrl });
-    } catch (error) {
-        console.error('Помилка при оновленні логотипу команди:', error);
+    } catch (err) {
+        error.value = "Помилка при оновленні логотипу команди";
     }
 };
 
@@ -96,8 +107,8 @@ const findAllTeams = async () => {
     try {
         const teamsFromDb = await findAllTeamInDb();
         teams.value = teamsFromDb;
-    } catch (error) {
-        console.error("Помилка при завантаженні даних команд:", error);
+    } catch (err) {
+        error.value = "Помилка при завантаженні даних команд:";
     }
 };
 

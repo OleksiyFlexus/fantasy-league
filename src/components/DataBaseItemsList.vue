@@ -9,8 +9,8 @@
       </div>
     </div>
     <div v-else>
-      <h1 v-if="itemType === 'team'">Жодної команди не знайдено</h1>
-      <h1 v-else>Жодного гравця не знайдено</h1>
+      <h1 v-if="itemType === 'team'">Жодної команди не знайдено...</h1>
+      <h1 v-else>Жодного гравця не знайдено...</h1>
     </div>
   </div>
 </template>
@@ -45,9 +45,16 @@ const props = defineProps({
 
 }
 
-.itemList h1 {
+.itemListSection h1 {
+  display: flex;
+  width: auto;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
   margin: 10px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
+  background-color: rgb(253, 109, 84);
+  border-radius: 5px;
 }
 </style>

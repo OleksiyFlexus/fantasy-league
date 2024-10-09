@@ -14,7 +14,7 @@
     position: absolute;
     left: 5px;
     display: flex;
-    height: 200px;
+    height: 185px;
     width: 365px;
     border-radius: 20px;
     background-size: cover;

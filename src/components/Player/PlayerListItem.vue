@@ -123,10 +123,10 @@ const props = defineProps({ player: Object });
 
 .player__photo {
     position: absolute;
-    top: 13px;
+    top: 5px;
     left: 33px;
     width: 40px;
-    height: 40px;
+    height: 50px;
     border-radius: 4px;
     object-fit: cover;
 }

@@ -29,18 +29,36 @@
 </template>
 
 <script setup>
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, defineEmits } from 'vue';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import ModalWindow from '../ModalWindow.vue';
 
+const emit = defineEmits(['timer-started', 'timer-stopped']);
 const { isModalActive, openModal, closeModal } = useModalWindow();
 
 const isRunning = ref(false);
+const timerInterval = ref(null);
 const timeInSeconds = ref(420);
-let timerInterval;
-
 const inputMinutes = ref(null);
 const inputSeconds = ref(null);
+
+const loadTimer = () => {
+    const savedTimer = parseInt(sessionStorage.getItem('timer'));
+    const isTimerRunning = sessionStorage.getItem('isTimerRunning') === 'true';
+
+    if (!isNaN(savedTimer)) {
+        timeInSeconds.value = savedTimer;
+    }
+
+    if (isTimerRunning) {
+        startTimer();
+    }
+};
+
+const saveTimer = () => {
+    sessionStorage.setItem('timer', timeInSeconds.value);
+    sessionStorage.setItem('isTimerRunning', isRunning.value);
+};
 
 const formattedTime = computed(() => {
     const minutes = String(Math.floor(timeInSeconds.value / 60)).padStart(2, '0');
@@ -49,49 +67,59 @@ const formattedTime = computed(() => {
 });
 
 const setTimer = () => {
-
     const totalMinutes = inputMinutes.value !== null ? parseInt(inputMinutes.value) : 0;
     const totalSeconds = inputSeconds.value !== null ? parseInt(inputSeconds.value) : 0;
-
     const totalTimeInSeconds = (totalMinutes * 60) + totalSeconds;
-    timeInSeconds.value = Math.max(totalTimeInSeconds, 0);
 
+    timeInSeconds.value = Math.max(totalTimeInSeconds, 0);
+    saveTimer();
     closeModal();
 };
 
 const startTimer = () => {
     if (isRunning.value) return;
     isRunning.value = true;
+    emit('timer-started');
 
-    timerInterval = setInterval(() => {
+    timerInterval.value = setInterval(() => {
         if (timeInSeconds.value > 0) {
             timeInSeconds.value--;
+            saveTimer();
         } else {
-            clearInterval(timerInterval);
+            clearInterval(timerInterval.value);
             isRunning.value = false;
+            emit('timer-stopped');
         }
     }, 1000);
 };
 
 const pauseTimer = () => {
-    clearInterval(timerInterval);
+    clearInterval(timerInterval.value);
     isRunning.value = false;
+    saveTimer();
 };
 
 const resetTimer = () => {
-    clearInterval(timerInterval);
+    clearInterval(timerInterval.value);
     isRunning.value = false;
     timeInSeconds.value = 420;
+    sessionStorage.removeItem('timer');
+    emit('timer-stopped');
+    saveTimer();
 };
 
+onMounted(() => {
+    loadTimer();
+});
+
 onUnmounted(() => {
-    clearInterval(timerInterval);
+    clearInterval(timerInterval.value);
 });
 </script>
 
 <style scoped>
 .matchTimerSection {
-    padding-top: 15px;
+    padding-top: 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -133,6 +161,7 @@ onUnmounted(() => {
 .timerModalWindowHeader {
     display: flex;
     justify-content: center;
+    text-align: center;
     align-items: center;
     font-size: 24px;
 }

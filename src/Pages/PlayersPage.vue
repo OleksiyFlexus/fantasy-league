@@ -3,6 +3,9 @@
   <div class="common_container">
     <PlayersMainContent />
     <SearchBar @update:search="handleSearch" />
+    <div v-if="error" class="error_message">
+      {{ error }}
+    </div>
     <div class="createItemSection">
       <CreatePlayersSection :search-query="searchQuery" @player-created="addPlayerToList" />
       <p>Показано результатів: {{ filteredPlayers.length }}</p>
@@ -23,17 +26,18 @@ import SearchBar from '@/components/SearchBar.vue';
 
 const players = ref([]);
 const searchQuery = ref('');
+const error = ref(null);
 
 const findAllPlayers = async () => {
   try {
     const playerDocs = await findAllPlayerInDb();
     if (playerDocs.empty) {
-      console.log('Гравців не знайдено в БД');
+      error.value = "Гравців не знайдено в БД";
     } else {
       players.value = playerDocs.map(doc => doc);
     }
-  } catch (error) {
-    console.error("Помилка при завантаженні данних гравців:", error);
+  } catch (err) {
+    error.value = "Помилка при завантаженні данних гравців:";
   }
 };
 
@@ -56,4 +60,3 @@ onMounted(async () => {
   await findAllPlayers();
 });
 </script>
-
