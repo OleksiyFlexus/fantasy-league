@@ -1,7 +1,7 @@
 <template>
     <router-view></router-view>
     <div>
-        <h1>Home page</h1>
+        <TeamInformationPage />
     </div>
 
     <div>
@@ -12,6 +12,8 @@
 </template>
 
 <script setup>
+import TeamInformationPage from '@/components/Team/TeamInformationPage.vue';
+
 
 </script>
 

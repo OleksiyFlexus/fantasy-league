@@ -32,7 +32,7 @@
 
 <script setup>
 import { Games, Goals, Assist } from '@/constants/importIcons';
-import AddButtonToSquad from './AddButtonToSquad.vue';
+import AddButtonToSquad from '@/components/Player/AddButtonToSquad.vue';
 const props = defineProps({ player: Object });
 </script>
 
