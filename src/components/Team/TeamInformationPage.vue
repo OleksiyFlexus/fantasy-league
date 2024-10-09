@@ -124,8 +124,7 @@ import { MatchFieldIcon, Goals, WinsIcon, LoseIcon, BackgroundTeamInfo } from '@
 .fieldBackground svg {
     position: absolute;
     height: 400px;
-    max-width: auto;
-    width: auto;
+    max-width: 355px;
     z-index: -9999;
 }
 
@@ -133,7 +132,7 @@ import { MatchFieldIcon, Goals, WinsIcon, LoseIcon, BackgroundTeamInfo } from '@
     display: flex;
     position: absolute;
     top: 550px;
-    left: 70px;
+    left: 68px;
     max-width: 80px;
 }
 
@@ -141,7 +140,7 @@ import { MatchFieldIcon, Goals, WinsIcon, LoseIcon, BackgroundTeamInfo } from '@
     display: flex;
     position: absolute;
     top: 550px;
-    left: 240px;
+    left: 225px;
     max-width: 80px;
 }
 
@@ -149,15 +148,15 @@ import { MatchFieldIcon, Goals, WinsIcon, LoseIcon, BackgroundTeamInfo } from '@
     display: flex;
     position: absolute;
     max-width: 80px;
-    left: 155px;
-    top: 620px;
+    left: 146px;
+    top: 610px;
 }
 
 .player4CardTeamInfoPage {
     display: flex;
     position: absolute;
     max-width: 80px;
-    left: 220px;
+    left: 205px;
     top: 400px;
 }
 
@@ -165,7 +164,7 @@ import { MatchFieldIcon, Goals, WinsIcon, LoseIcon, BackgroundTeamInfo } from '@
     display: flex;
     position: absolute;
     max-width: 80px;
-    left: 100px;
+    left: 85px;
     top: 400px;
 }
 </style>

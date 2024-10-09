@@ -50,5 +50,7 @@ const props = defineProps({ team: Object });
 
 .teamLogoSection img {
     border-radius: 5px;
+    object-fit: cover;
+    object-position: top;
 }
 </style>

@@ -50,6 +50,8 @@ const closeModal = () => {
     padding: 20px;
     border-radius: 8px;
     max-width: 500px;
+    max-height: 700px;
+    overflow: auto;
     width: 90%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -67,6 +69,9 @@ const closeModal = () => {
 
 .modal_header {
     display: flex;
+    position: sticky;
+    z-index: 3;
+    top: 0;
     justify-content: flex-end;
     align-items: center;
 }

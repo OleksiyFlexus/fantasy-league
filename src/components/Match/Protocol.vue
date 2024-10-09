@@ -85,8 +85,10 @@ watch(() => props.rightTeam, (newValue) => {
 }
 
 .protocolSection img {
-    width: 35px;
-    height: auto;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    object-position: top;
 
 }
 

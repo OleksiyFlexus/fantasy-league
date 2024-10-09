@@ -179,5 +179,7 @@ watch(() => props.isTimerRunning, (newValue) => {
 .event__section img {
     height: 105px;
     width: 105px;
+    object-fit: cover;
+    object-position: top;
 }
 </style>

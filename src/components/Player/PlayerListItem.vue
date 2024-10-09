@@ -77,7 +77,7 @@ const props = defineProps({ player: Object });
 
 .playerSurname {
     text-transform: capitalize;
-    font-size: clamp(19px, 2vw, 8px);
+    font-size: clamp(17px, 2vw, 8px);
     text-overflow: ellipsis;
     display: block;
     overflow: hidden;
@@ -129,6 +129,7 @@ const props = defineProps({ player: Object });
     height: 50px;
     border-radius: 4px;
     object-fit: cover;
+    object-position: top;
 }
 
 .player__statSection {
