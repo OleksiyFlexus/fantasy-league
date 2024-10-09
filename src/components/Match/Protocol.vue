@@ -44,6 +44,8 @@ watch(() => props.rightTeam, (newValue) => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap');
+
 .protocolSection {
     display: flex;
     align-items: center;
@@ -92,11 +94,15 @@ watch(() => props.rightTeam, (newValue) => {
     display: block;
     text-align: center;
     text-transform: uppercase;
-    font-size: clamp(14px, 2vw, 12px);
+    font-size: clamp(18px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100px;
     -webkit-line-clamp: 2;
+    font-family: "Protest Strike", sans-serif;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .rightProtocolSection {
@@ -111,10 +117,14 @@ watch(() => props.rightTeam, (newValue) => {
     display: block;
     text-align: center;
     text-transform: uppercase;
-    font-size: clamp(14px, 2vw, 12px);
+    font-size: clamp(18px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100px;
     -webkit-line-clamp: 2;
+    font-family: "Protest Strike", sans-serif;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-style: normal;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="event__section">
-        <div class="left__teamSection" @click="!props.isTimerRunning ? openTeamSelection('left') : null">
+        <div class="left__teamSection" @click="!isTimerBlocked ? openTeamSelection('left') : null">
             <img :src="leftTeam.logo || defaultLogo" alt="left team logo">
             <p>{{ leftTeam.teamName || 'Выберите команду' }}</p>
         </div>
@@ -15,14 +15,13 @@
                 <p>0</p>
             </div>
         </div>
-        <div class="right__teamSection" @click="!props.isTimerRunning ? openTeamSelection('right') : null">
+        <div class="right__teamSection" @click="!isTimerBlocked ? openTeamSelection('right') : null">
             <img :src="rightTeam.logo || defaultLogo" alt="right team logo">
             <p>{{ rightTeam.teamName || 'Выберите команду' }}</p>
         </div>
-
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <div class="teamSelectModalWindow">
-                <h2>Выберите команду</h2>
+                <h1>Выберите команду</h1>
                 <div class="selectTeamSection">
                     <div v-if="teams.length === 0">Нет доступных команд</div>
                     <div v-for="team in teams" :key="team.id" @click="selectTeam(team)">
@@ -35,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import ModalWindow from '@/components/ModalWindow.vue';
 import TeamListItem from '@/components/team/TeamListItem.vue';
@@ -51,11 +50,13 @@ const emit = defineEmits(['team-selected']);
 const leftTeam = ref(JSON.parse(sessionStorage.getItem('leftTeam')) || {});
 const rightTeam = ref(JSON.parse(sessionStorage.getItem('rightTeam')) || {});
 const currentTeamSide = ref(null);
+const isTimerBlocked = ref(false);
+const isTeamsSelected = computed(() => !!leftTeam.value.teamName && !!rightTeam.value.teamName);
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
 
 const openTeamSelection = (side) => {
-    if (props.isTimerRunning) return;
+    if (isTimerBlocked.value) return;
     currentTeamSide.value = side;
     openModal();
 };
@@ -73,14 +74,30 @@ const selectTeam = (team) => {
     closeModal();
 };
 
+const resetSelection = () => {
+    leftTeam.value = {};
+    rightTeam.value = {};
+    sessionStorage.removeItem('leftTeam');
+    sessionStorage.removeItem('rightTeam');
+    isTimerBlocked.value = false;
+    sessionStorage.setItem('isTimerBlocked', 'false');
+};
+
 onMounted(() => {
     const storedLeftTeam = JSON.parse(sessionStorage.getItem('leftTeam'));
     const storedRightTeam = JSON.parse(sessionStorage.getItem('rightTeam'));
     leftTeam.value = storedLeftTeam || {};
     rightTeam.value = storedRightTeam || {};
+
+    const isTimerRunning = sessionStorage.getItem('isTimerRunning') === 'true';
+    isTimerBlocked.value = sessionStorage.getItem('isTimerBlocked') === 'true';
+});
+
+watch(() => props.isTimerRunning, (newValue) => {
+    isTimerBlocked.value = newValue;
+    sessionStorage.setItem('isTimerBlocked', newValue);
 });
 </script>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap');
@@ -143,6 +160,14 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     gap: 25px;
+}
+
+.teamSelectModalWindow h1 {
+    display: flex;
+    font-size: 24px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
 }
 
 .selectTeamSection {

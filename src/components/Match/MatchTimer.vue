@@ -24,6 +24,9 @@
                 <button @click="pauseTimer" :disabled="!isRunning">Пауза</button>
                 <button @click="resetTimer">Обнулити</button>
             </div>
+            <div v-if="error" class="error_message">
+                {{ error }}
+            </div>
         </div>
     </div>
 </template>
@@ -41,7 +44,7 @@ const timerInterval = ref(null);
 const timeInSeconds = ref(420);
 const inputMinutes = ref(null);
 const inputSeconds = ref(null);
-
+const error = ref('');
 const loadTimer = () => {
     const savedTimer = parseInt(sessionStorage.getItem('timer'));
     const isTimerRunning = sessionStorage.getItem('isTimerRunning') === 'true';
@@ -76,8 +79,26 @@ const setTimer = () => {
     closeModal();
 };
 
+const checkTeamsSelected = () => {
+    const leftTeam = JSON.parse(sessionStorage.getItem('leftTeam'));
+    const rightTeam = JSON.parse(sessionStorage.getItem('rightTeam'));
+
+    if (!leftTeam || !leftTeam.teamName || !rightTeam || !rightTeam.teamName) {
+        error.value = 'Будь ласка оберіть дві команди щоб розпочати матч.';
+        return false;
+    }
+
+    error.value = '';
+    return true;
+};
+
 const startTimer = () => {
     if (isRunning.value) return;
+
+    if (!checkTeamsSelected()) {
+        return;
+    }
+
     isRunning.value = true;
     emit('timer-started');
 
@@ -106,6 +127,10 @@ const resetTimer = () => {
     sessionStorage.removeItem('timer');
     emit('timer-stopped');
     saveTimer();
+};
+
+const saveTimerBlocked = () => {
+    sessionStorage.setItem('isTimerBlocked', isRunning.value);
 };
 
 onMounted(() => {
