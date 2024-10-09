@@ -74,8 +74,10 @@ const selectTeam = (team) => {
 };
 
 onMounted(() => {
-    leftTeam.value = JSON.parse(sessionStorage.getItem('leftTeam')) || {};
-    rightTeam.value = JSON.parse(sessionStorage.getItem('rightTeam')) || {};
+    const storedLeftTeam = JSON.parse(sessionStorage.getItem('leftTeam'));
+    const storedRightTeam = JSON.parse(sessionStorage.getItem('rightTeam'));
+    leftTeam.value = storedLeftTeam || {};
+    rightTeam.value = storedRightTeam || {};
 });
 </script>
 

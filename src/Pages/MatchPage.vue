@@ -20,6 +20,7 @@ import MatchTimer from '@/components/match/MatchTimer.vue';
 import Protocol from '@/components/match/Protocol.vue';
 import ProtocolPlayerItem from '@/components/player/ProtocolPlayerItems.vue';
 import { findAllTeamInDb } from '@/api/team';
+import { useModalWindow } from '@/helpers/useModalWindow';
 
 const teams = ref([]);
 const error = ref(null);
@@ -27,6 +28,8 @@ const isTimerRunning = ref(false);
 const leftTeam = ref({});
 const rightTeam = ref({});
 const currentTeamSide = ref('');
+
+const { openModal } = useModalWindow();
 
 const loadTeams = async () => {
     const storedTeams = JSON.parse(sessionStorage.getItem('teams'));
@@ -49,9 +52,14 @@ const findAllTeams = async () => {
     }
 };
 
-const handleTeamSelection = (side) => {
-    if (isTimerRunning.value) return;
-    currentTeamSide.value = side;
+const handleTeamSelection = (team, side) => {
+    if (side === 'left') {
+        leftTeam.value = team;
+        sessionStorage.setItem('leftTeam', JSON.stringify(team));
+    } else if (side === 'right') {
+        rightTeam.value = team;
+        sessionStorage.setItem('rightTeam', JSON.stringify(team));
+    }
     openModal();
 };
 

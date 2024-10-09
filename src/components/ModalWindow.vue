@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isActive" class="modal_overlay">
+    <div v-show="isActive" class="modal_overlay">
         <div class="modal_container" :class="{ 'fade_in': isActive, 'fade_out': !isActive }" @click.stop>
             <div class="modal_header">
                 <slot name="header">
