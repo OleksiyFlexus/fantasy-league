@@ -11,7 +11,7 @@
         <div class="player__nameSection">
             <p class="playerName">{{ player.name }}</p>
             <p class="playerSurname">{{ player.surname }}</p>
-            <AddButtonToSquad />
+            <AddButtonToSquad @team-selected="handleTeamSelected" :player="player" />
         </div>
         <div class="player__statSection">
             <div class="player__statItem">
@@ -33,11 +33,21 @@
 <script setup>
 import { Games, Goals, Assist } from '@/constants/importIcons';
 import AddButtonToSquad from '@/components/player/AddButtonToSquad.vue';
-const props = defineProps({ player: Object });
+const emit = defineEmits(['team-selected']);
+
+const props = defineProps({
+    player: {
+        type: Object,
+        required: true
+    }
+});
+
+const handleTeamSelected = (teamData) => {
+    emit('team-selected', teamData);
+};
 </script>
 
-<style>
-
+<style scoped>
 .player__items {
     display: flex;
     justify-content: space-between;
@@ -66,7 +76,7 @@ const props = defineProps({ player: Object });
     display: flex;
     flex-direction: column;
     max-width: 113px;
-    gap: 3px; 
+    gap: 3px;
     padding-top: 15px;
 
 }

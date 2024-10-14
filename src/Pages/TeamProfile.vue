@@ -1,10 +1,11 @@
 <template>
-    <router-view></router-view>
+    <router-view />
     <div class="common_container">
-        <TeamProfileHeader :team="team" />
+        <TeamProfileHeader :team="selectedTeam" />
         <TeamProfileStatisitc />
         <TeamProfilePlayersCards />
-        <TeamProfilePlayersList :players="players" />
+        <TeamProfilePlayersList :players="selectedTeamPlayers" />
+        <div v-if="error">{{ error }}</div>
     </div>
 </template>
 
@@ -12,14 +13,15 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { findAllTeamInDb } from '@/api/team.js';
+import { findPlayersByTeamId } from '@/api/player';
 import TeamProfileHeader from '@/components/team/TeamProfileHeader.vue';
 import TeamProfilePlayersList from '@/components/team/TeamProfilePlayersList.vue';
 import TeamProfilePlayersCards from '@/components/team/TeamProfilePlayersCards.vue';
 import TeamProfileStatisitc from '@/components/team/TeamProfileStatisitc.vue';
 
 const teams = ref([]);
-const players = ref([]);
-const team = ref(null);
+const selectedTeamPlayers = ref([]);
+const selectedTeam = ref(null);
 const error = ref(null);
 
 const route = useRoute();
@@ -29,12 +31,18 @@ const findAllTeams = async () => {
     try {
         const teamsFromDb = await findAllTeamInDb();
         teams.value = teamsFromDb;
-        team.value = teams.value.find(t => t.teamName === teamName) || null;
-        if (!team.value) {
+        selectedTeam.value = teams.value.find(t => t.teamName === teamName) || null;
+        if (selectedTeam.value) {
+            selectedTeamPlayers.value = await findPlayersByTeamId(selectedTeam.value.id);
+            if (selectedTeamPlayers.value.length === 0) {
+                console.warn('Игроков нет или запрос не вернул данных');
+            }
+        } else {
             error.value = `Команда "${teamName}" не найдена`;
         }
     } catch (err) {
         error.value = "Помилка при завантаженні даних команд.";
+        console.error('Ошибка при загрузке команды или игроков:', err);
     }
 };
 
@@ -43,4 +51,4 @@ onMounted(() => {
 });
 </script>
 
-<style></style>
+<style scoped></style>
