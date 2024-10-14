@@ -29,6 +29,6 @@ export const findAllTeamInDb = async () => {
     return result;
   } catch (error) {
     console.error("Помилка при отриманні даних:", error);
-    return []; // Возвращаем пустой массив при ошибке
+    return []; 
   }
 };

@@ -4,6 +4,7 @@
             <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
             <p class="player__cardName">{{ player.surname }}</p>
             <p class="player__Number">{{ player.number }}</p>
+            <img class="playerTeamLogo" src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
             <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
             <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
         </div>
@@ -27,12 +28,11 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script setup>
 import { Games, Goals, Assist } from '@/constants/importIcons';
-import AddButtonToSquad from '@/components/Player/AddButtonToSquad.vue';
+import AddButtonToSquad from '@/components/player/AddButtonToSquad.vue';
 const props = defineProps({ player: Object });
 </script>
 
@@ -54,6 +54,12 @@ const props = defineProps({ player: Object });
 .card__img {
     height: 105px;
     width: 85px;
+}
+
+.playerTeamLogo {
+    position: absolute;
+    height: 25px;
+    top: 70px;
 }
 
 .player__nameSection {

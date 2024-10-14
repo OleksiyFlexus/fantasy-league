@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     message: {
@@ -25,7 +25,7 @@ watch(() => props.visible, (newVal) => {
     if (newVal) {
         setTimeout(() => {
             internalVisible.value = false;
-        }, 3000);
+        }, 100);
     }
 });
 </script>

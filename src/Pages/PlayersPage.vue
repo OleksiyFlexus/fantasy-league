@@ -20,7 +20,7 @@ import { ref, computed, onMounted } from 'vue';
 import { findAllPlayerInDb } from '@/api/player';
 import PlayersMainContent from '@/components/player/PlayersMainContent.vue';
 import PlayersHeader from '@/components/TableHeader.vue';
-import CreatePlayersSection from '@/components/player/CreatePlayersSection.vue';
+import CreatePlayersSection from '@/components/player/CreatePlayers.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 import SearchBar from '@/components/SearchBar.vue';
 

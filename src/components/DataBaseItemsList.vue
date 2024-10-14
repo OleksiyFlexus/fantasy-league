@@ -4,7 +4,9 @@
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
           <PlayerListItem v-if="itemType === 'player'" :player="item" />
-          <TeamListItem v-else-if="itemType === 'team'" :team="item" />
+          <router-link v-else-if="itemType === 'team'" :to="{ name: 'TeamProfile', params: { teamName: item.teamName, teamLogo: item.teamLogo} }">
+            <TeamListItem :team="item" />
+          </router-link>
         </div>
       </div>
     </div>

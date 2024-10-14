@@ -3,8 +3,7 @@
         <AddButton @click="openModal" />
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <PlayerCard :initialFormValues="initialFormValues" />
-            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
-                :handlePhotoUpload="handlePhotoUpload" />
+            <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue" :handlePhotoUpload="handlePhotoUpload" />
             <div class="button__container">
                 <CloseButton @click="close" />
                 <SaveButton @click="createPlayer" />
@@ -13,7 +12,7 @@
                 {{ error }}
             </div>
         </ModalWindow>
-        <NotificationWindow :message="notificationMessage" :visible="showNotification"/>
+        <NotificationWindow :message="notificationMessage" :visible="showNotification" />
     </div>
 </template>
 
@@ -34,7 +33,7 @@ import NotificationWindow from '../NotificationWindow.vue';
 
 const emit = defineEmits(['player-created']);
 const showNotification = ref(false);
-const notificationMessage = ref ('');
+const notificationMessage = ref('');
 
 const players = ref([]);
 const error = ref(null);
@@ -109,11 +108,9 @@ const changeFormValue = (type, value) => {
             if (value === 0) {
                 return;
             }
-            if (value.length <= 2) {
-                initialFormValues[type] = value;
-            } else {
-                initialFormValues[type] = value.slice(0, 2);
-            }
+            initialFormValues[type] = value.slice(0, 2);
+        } else {
+            initialFormValues[type] = value;
         }
     }
 };

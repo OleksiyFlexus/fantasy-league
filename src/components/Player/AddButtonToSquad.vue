@@ -1,11 +1,24 @@
 <template>
-    <button class="add_playerToSquad" type="submit">Додати гравця до команди
+    <button class="add_playerToSquad" type="submit" @click="openModal">Додати гравця до команди
         <AddToTeamIcon />
     </button>
+    <ModalWindow :isActive="isModalActive" @close="closeModal">
+        <div class="teamSelectModalWindow">
+            <h1>Выберите команду</h1>
+            <div class="selectTeamSection">
+
+            </div>
+        </div>
+    </ModalWindow>
 </template>
 
 <script setup>
 import { AddToTeamIcon } from '@/constants/importIcons';
+import ModalWindow from '../ModalWindow.vue';
+import { useModalWindow } from '@/helpers/useModalWindow';
+
+const { isModalActive, openModal, closeModal } = useModalWindow();
+
 </script>
 
 <style scoped>

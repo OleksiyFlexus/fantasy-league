@@ -18,7 +18,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { findAllTeamInDb } from '@/api/team';
 import SearchBar from '@/components/SearchBar.vue';
-import CreateTeamSection from '@/components/team/CreateTeamSection.vue';
+import CreateTeamSection from '@/components/team/CreateTeam.vue';
 import TeamsTable from '@/components/TableHeader.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 
@@ -30,7 +30,7 @@ const findAllTeams = async () => {
     try {
         const teamsFromDb = await findAllTeamInDb();
         teams.value = teamsFromDb;
-        sessionStorage.setItem('teams', JSON.stringify(teamsFromDb)); // Сохраняем команды в sessionStorage
+        sessionStorage.setItem('teams', JSON.stringify(teamsFromDb));
     } catch (err) {
         error.value = "Виникла помилка при завантаженні даних команд. Спробуйте ще раз.";
     }
@@ -56,7 +56,7 @@ onMounted(async () => {
 </script>
 
 <style>
-.createItemSection{
+.createItemSection {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -66,5 +66,4 @@ onMounted(async () => {
 .createItemSection p {
     font-weight: 700;
 }
-
 </style>
