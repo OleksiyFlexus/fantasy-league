@@ -32,7 +32,7 @@
 
 <script setup>
 import { Games, Goals, Assist } from '@/constants/importIcons';
-import AddButtonToSquad from '@/components/player/AddButtonToSquad.vue';
+import AddButtonToSquad from '@/components/Player/AddButtonToSquad.vue';
 const emit = defineEmits(['team-selected']);
 
 const props = defineProps({

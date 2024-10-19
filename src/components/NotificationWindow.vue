@@ -1,34 +1,35 @@
 <template>
-    <div v-if="visible" class="notification">
-        <p>{{ message }}</p>
-    </div>
+  <div v-if="internalVisible" class="notification">
+      <p>{{ message }}</p>
+  </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    message: {
-        type: String,
-        required: true,
-    },
-    visible: {
-        type: Boolean,
-        default: false,
-    },
+  message: {
+      type: String,
+      required: true,
+  },
+  visible: {
+      type: Boolean,
+      default: false,
+  },
 });
 
 const internalVisible = ref(props.visible);
 
 watch(() => props.visible, (newVal) => {
-    internalVisible.value = newVal;
-    if (newVal) {
-        setTimeout(() => {
-            internalVisible.value = false;
-        }, 100);
-    }
+  internalVisible.value = newVal;
+  if (newVal) {
+      setTimeout(() => {
+          internalVisible.value = false;
+      }, 2000); // Увеличьте время до 3 секунд
+  }
 });
 </script>
+
 
 <style scoped>
 .notification {

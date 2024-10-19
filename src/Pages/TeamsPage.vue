@@ -18,7 +18,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { findAllTeamInDb } from '@/api/team';
 import SearchBar from '@/components/SearchBar.vue';
-import CreateTeamSection from '@/components/team/CreateTeam.vue';
+import CreateTeamSection from '@/components/Team/CreateTeam.vue';
 import TeamsTable from '@/components/TableHeader.vue';
 import DataBaseItemsList from '@/components/DataBaseItemsList.vue';
 

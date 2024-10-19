@@ -1,25 +1,23 @@
 <template>
-    <router-view />
-    <div class="common_container">
-        <TeamProfileHeader :team="selectedTeam" />
-        <TeamProfileStatisitc />
-        <TeamProfilePlayersCards />
-        <TeamProfilePlayersList :players="selectedTeamPlayers" />
-        <div v-if="error">{{ error }}</div>
-    </div>
+  <router-view />
+  <div class="common_container">
+      <TeamProfileHeader :team="selectedTeam" />
+      <TeamProfileStatisitc />
+      <TeamProfilePlayersCards />
+      <TeamProfilePlayersList :players="selectedTeamPlayers" />
+      <div v-if="error">{{ error }}</div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { findAllTeamInDb } from '@/api/team.js';
-import { findPlayersByTeamId } from '@/api/player';
-import TeamProfileHeader from '@/components/team/TeamProfileHeader.vue';
-import TeamProfilePlayersList from '@/components/team/TeamProfilePlayersList.vue';
-import TeamProfilePlayersCards from '@/components/team/TeamProfilePlayersCards.vue';
-import TeamProfileStatisitc from '@/components/team/TeamProfileStatisitc.vue';
+import { getDatabase, ref as dbRef, onValue } from 'firebase/database';
+import TeamProfileHeader from '@/components/Team/TeamProfileHeader.vue';
+import TeamProfilePlayersList from '@/components/Team/TeamProfilePlayersList.vue';
+import TeamProfilePlayersCards from '@/components/Team/TeamProfilePlayersCards.vue';
+import TeamProfileStatisitc from '@/components/Team/TeamProfileStatisitc.vue';
 
-const teams = ref([]);
 const selectedTeamPlayers = ref([]);
 const selectedTeam = ref(null);
 const error = ref(null);
@@ -27,28 +25,55 @@ const error = ref(null);
 const route = useRoute();
 const teamName = decodeURIComponent(route.params.teamName);
 
-const findAllTeams = async () => {
-    try {
-        const teamsFromDb = await findAllTeamInDb();
-        teams.value = teamsFromDb;
-        selectedTeam.value = teams.value.find(t => t.teamName === teamName) || null;
-        if (selectedTeam.value) {
-            selectedTeamPlayers.value = await findPlayersByTeamId(selectedTeam.value.id);
-            if (selectedTeamPlayers.value.length === 0) {
-                console.warn('Игроков нет или запрос не вернул данных');
-            }
-        } else {
-            error.value = `Команда "${teamName}" не найдена`;
-        }
-    } catch (err) {
-        error.value = "Помилка при завантаженні даних команд.";
-        console.error('Ошибка при загрузке команды или игроков:', err);
-    }
+const findAllTeams = () => {
+  const db = getDatabase();
+  const teamsRef = dbRef(db, 'teams'); // Путь к коллекции команд
+
+  onValue(teamsRef, (snapshot) => {
+      const teamsFromDb = snapshot.val();
+      if (teamsFromDb) {
+          const teamsArray = Object.keys(teamsFromDb).map(key => ({
+              id: key,
+              ...teamsFromDb[key]
+          }));
+
+          selectedTeam.value = teamsArray.find(t => t.teamName === teamName) || null;
+
+          if (selectedTeam.value) {
+              findPlayersByTeamId(selectedTeam.value.id);
+          } else {
+              error.value = `Команда "${teamName}" не найдена`;
+          }
+      } else {
+          error.value = "Команды не найдены в БД.";
+      }
+  }, (error) => {
+      console.error('Ошибка при загрузке команд:', error);
+      error.value = "Ошибка при загрузке команд.";
+  });
+};
+
+const findPlayersByTeamId = (teamId) => {
+  const db = getDatabase();
+  const playersRef = dbRef(db, `teams/${teamId}/players`); // Путь к игрокам команды
+
+  onValue(playersRef, (snapshot) => {
+      const playersData = snapshot.val();
+      selectedTeamPlayers.value = playersData ? Object.keys(playersData).map(key => ({
+          id: key,
+          ...playersData[key]
+      })) : [];
+      
+      if (selectedTeamPlayers.value.length === 0) {
+          console.warn('Игроков нет или запрос не вернул данных');
+      }
+  }, (error) => {
+      console.error('Ошибка при загрузке игроков:', error);
+      error.value = "Ошибка при загрузке игроков.";
+  });
 };
 
 onMounted(() => {
-    findAllTeams();
+  findAllTeams();
 });
 </script>
-
-<style scoped></style>

@@ -19,8 +19,8 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import PlayerListItem from './player/PlayerListItem.vue';
-import TeamListItem from './team/TeamListItem.vue';
+import PlayerListItem from '@/components/Player/PlayerListItem.vue';
+import TeamListItem from '@/components/team/TeamListItem.vue';
 
 const props = defineProps({
   items: {

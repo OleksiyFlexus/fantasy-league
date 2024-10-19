@@ -1,93 +1,103 @@
-import { firestoreDb } from "@/firebase";
-import {
-  doc,
-  collection,
-  addDoc,
-  updateDoc,
-  query,
-  getDocs,
-  deleteDoc,
-  where,
-  arrayUnion,
-} from "firebase/firestore";
+import { getDatabase, ref as dbRef, set, push, get, child, update, remove } from 'firebase/database';
 
+// Функция для создания игрока в базе данных
 export const createPlayerInDb = async (playerData) => {
-  const collectionName = "players";
   try {
-    const playersCollectionRef = collection(firestoreDb, collectionName);
-
+    const db = getDatabase();
+    const newPlayerRef = push(ref(db, 'players'));
     const playerWithTeams = {
       ...playerData,
       teams: [],
     };
-    const docRef = await addDoc(playersCollectionRef, playerWithTeams);
-    console.log("Гравець успішно створений ", docRef.id);
-    return docRef.id;
+    await set(newPlayerRef, playerWithTeams);
+    console.log('Гравець успішно створений', newPlayerRef.key);
+    return newPlayerRef.key; // Возвращаем сгенерированный ключ игрока
   } catch (error) {
-    console.error("Помилка при додаванні гравця: ", error);
+    console.error('Помилка при додаванні гравця:', error);
   }
 };
 
+// Функция для получения всех игроков из базы данных
 export const findAllPlayerInDb = async () => {
-  const collectionName = "players";
   try {
-    const playersCollectionRef = collection(firestoreDb, collectionName);
-    const docRef = await getDocs(query(playersCollectionRef));
+    const db = getDatabase();
+    const playersRef = ref(db, 'players');
+    const snapshot = await get(playersRef);
 
-    const result = docRef.docs.map((el) => ({ ...el.data(), id: el.id }));
-
-    return result;
-  } catch (error) {
-    console.error("Помилка при отриманні данних", error);
-  }
-};
-
-export const findPlayersByTeamId = async (teamId) => {
-  const collectionName = "players";
-  try {
-    console.log("Загружаем игроков для команды с ID:", teamId);
-    const playersCollectionRef = collection(firestoreDb, collectionName);
-    const querySnapshot = await getDocs(
-      query(playersCollectionRef, where("teams", "array-contains", teamId))
-    );
-    if (querySnapshot.empty) {
-      console.warn("Нет игроков, связанных с данной командой.");
+    if (snapshot.exists()) {
+      const playersData = snapshot.val();
+      // Преобразуем объект в массив с добавлением ID игрока
+      const result = Object.keys(playersData).map((key) => ({
+        id: key,
+        ...playersData[key],
+      }));
+      return result;
+    } else {
+      console.warn('Гравців не знайдено');
       return [];
     }
-    const players = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    console.log("Игроки, полученные из базы данных:", players);
-    return players;
   } catch (error) {
-    console.error("Ошибка при загрузке игроков:", error);
+    console.error('Помилка при отриманні данних:', error);
+  }
+};
+
+// Функция для поиска игроков по ID команды
+export const findPlayersByTeamId = async (teamId) => {
+  try {
+    const db = getDatabase();
+    const playersRef = ref(db, 'players');
+    const snapshot = await get(playersRef);
+
+    if (snapshot.exists()) {
+      const playersData = snapshot.val();
+      // Фильтрация игроков по наличию teamId в их командах
+      const filteredPlayers = Object.keys(playersData)
+        .map((key) => ({
+          id: key,
+          ...playersData[key],
+        }))
+        .filter((player) => player.teams && player.teams.includes(teamId));
+
+      return filteredPlayers;
+    } else {
+      console.warn('Гравців не знайдено');
+      return [];
+    }
+  } catch (error) {
+    console.error('Ошибка при загрузке игроков:', error);
     return [];
   }
 };
 
-export const addPlayerToTeam = async (playerId, teamId) => {
-  try {
-    const teamRef = doc(firestoreDb, "teams", teamId);
-    const playerRef = doc(firestoreDb, "players", playerId);
-    await updateDoc(teamRef, {
-      players: arrayUnion(playerId),
-    });
-    await updateDoc(playerRef, {
-      teams: arrayUnion(teamId),
-    });
-    console.log(`Игрок ${playerId} добавлен в команду ${teamId}`);
-  } catch (error) {
-    console.error("Ошибка при добавлении игрока в команду:", error);
-  }
-};
+// Функция для добавления игрока в команду
+export const updatePlayerTeamInDb = async (playerId, team) => {
+  const db = getDatabase();
+  const playerRef = dbRef(db, `players/${playerId}`);
 
+  // Обновляем данные игрока, добавляя ему команду и логотип
+  await update(playerRef, {
+    teamLogo: team.teamLogo, // Убедитесь, что teamLogo не undefined
+    teamId: team.id // Убедитесь, что teamId не undefined
+  });
+
+  // Добавляем игрока в список игроков команды
+  const teamPlayersRef = dbRef(db, `teams/${team.id}/players/${playerId}`);
+  
+  // Здесь вы также можете передавать все необходимые поля игрока
+  await update(teamPlayersRef, {
+    playerId,
+    name: props.player.name, // Убедитесь, что name не undefined
+    surname: props.player.surname // Убедитесь, что surname не undefined
+  });
+};
+// Функция для удаления игрока
 export const deletePlayerFromDb = async (playerId) => {
   try {
-    const playerRef = doc(firestoreDb, "players", playerId);
-    await deleteDoc(playerRef);
+    const db = getDatabase();
+    const playerRef = ref(db, `players/${playerId}`);
+    await remove(playerRef);
     console.log(`Игрок с ID ${playerId} успешно удален`);
   } catch (error) {
-    console.error("Ошибка при удалении игрока:", error);
+    console.error('Ошибка при удалении игрока:', error);
   }
 };
