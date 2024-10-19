@@ -23,22 +23,20 @@ const props = defineProps({ players: Array });
 
 <style scoped>
 .teamProfile {
-    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    text-transform: capitalize;
+    gap: 25px;
     font-size: 20px;
     font-weight: 700;
-    color: #e75757;
-    height: 100px;
     width: auto;
-    background-color: #cecece;
 }
 
 .playerItem {
     display: flex;
     align-items: center;
-    gap: 20px
+    background-color: #cecece;
+    gap: 20px;
 }
 
 
@@ -50,10 +48,10 @@ const props = defineProps({ players: Array });
 
 .playerName {
     display: flex;
+    align-items: center;
     text-align: center;
-    justify-content: flex-start;
-    padding-top: 20px;
+    gap: 10px;
     height: 100px;
-    font-size: 20px;
+    font-size: 24px;
 }
 </style>
