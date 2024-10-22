@@ -40,8 +40,6 @@ const findAllPlayers = () => {
           id: key,
           ...playersData[key],
         }));
-      } else {
-        error.value = "Гравців не знайдено в БД";
       }
     });
   } catch (err) {

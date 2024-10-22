@@ -3,11 +3,8 @@
     <AddButton @click="openModal" />
     <ModalWindow :isActive="isModalActive" @close="closeModal">
       <PlayerCard :initialFormValues="initialFormValues" />
-      <CreatePlayerForm
-        :initialFormValues="initialFormValues"
-        :changeFormValue="changeFormValue"
-        :handlePhotoUpload="handlePhotoUpload"
-      />
+      <CreatePlayerForm :initialFormValues="initialFormValues" :changeFormValue="changeFormValue"
+        :handlePhotoUpload="handlePhotoUpload" />
       <div class="button__container">
         <CloseButton @click="close" />
         <SaveButton @click="createPlayer" />
@@ -16,10 +13,7 @@
         {{ error }}
       </div>
     </ModalWindow>
-    <NotificationWindow
-      :message="notificationMessage"
-      :visible="showNotification"
-    />
+    <NotificationWindow :message="notificationMessage" :visible="showNotification" />
   </div>
 </template>
 
@@ -56,15 +50,11 @@ let errorTimeout = null;
 
 const displayError = (message) => {
   error.value = message;
-
-  // Сбрасываем таймер, если он уже установлен
   if (errorTimeout) {
     clearTimeout(errorTimeout);
   }
-
-  // Устанавливаем таймер для скрытия сообщения через 1 секунду
   errorTimeout = setTimeout(() => {
-    error.value = null; // Сбрасываем сообщение об ошибке
+    error.value = null; е
   }, 1000);
 };
 

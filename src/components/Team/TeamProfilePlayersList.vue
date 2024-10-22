@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div v-else>
+    <div class="playersNotFind" v-else>
         <span>В команді немає жодного гравця</span>
     </div>
 </template>
@@ -54,4 +54,15 @@ const props = defineProps({ players: Array });
     height: 100px;
     font-size: 24px;
 }
+
+.playersNotFind span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    height: 50px;
+    background-color: #cecece;
+}
+
 </style>

@@ -4,7 +4,7 @@
             <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
             <p class="player__cardName">{{ player.surname }}</p>
             <p class="player__Number">{{ player.number }}</p>
-            <img class="playerTeamLogo" src="@/assets/images/DefaultTeamLogo.png" alt="default team logo">
+            <img v-if="teamLogo" :src="teamLogo" class="playerTeamLogo" alt="team logo">
             <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
             <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
         </div>

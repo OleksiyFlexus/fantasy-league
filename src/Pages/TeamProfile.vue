@@ -27,7 +27,7 @@ const teamName = decodeURIComponent(route.params.teamName);
 
 const findAllTeams = () => {
   const db = getDatabase();
-  const teamsRef = dbRef(db, 'teams'); // Путь к коллекции команд
+  const teamsRef = dbRef(db, 'teams');
 
   onValue(teamsRef, (snapshot) => {
       const teamsFromDb = snapshot.val();
@@ -55,7 +55,7 @@ const findAllTeams = () => {
 
 const findPlayersByTeamId = (teamId) => {
   const db = getDatabase();
-  const playersRef = dbRef(db, `teams/${teamId}/players`); // Путь к игрокам команды
+  const playersRef = dbRef(db, `teams/${teamId}/players`);
 
   onValue(playersRef, (snapshot) => {
       const playersData = snapshot.val();
