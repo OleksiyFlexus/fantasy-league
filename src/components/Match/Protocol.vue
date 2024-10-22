@@ -79,6 +79,7 @@ watch(() => props.rightTeam, (newValue) => {
 .leftProtocolSection {
     display: flex;
     justify-content: flex-start;
+    width: 158px;
     align-items: center;
     flex-direction: row;
     gap: 10px;
@@ -99,7 +100,7 @@ watch(() => props.rightTeam, (newValue) => {
     font-size: clamp(18px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100px;
+    max-width: 110px;
     -webkit-line-clamp: 2;
     font-family: "Protest Strike", sans-serif;
     text-transform: capitalize;
@@ -109,7 +110,8 @@ watch(() => props.rightTeam, (newValue) => {
 
 .rightProtocolSection {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    width: 158px;
     align-items: center;
     flex-direction: row;
     gap: 10px;
@@ -122,7 +124,7 @@ watch(() => props.rightTeam, (newValue) => {
     font-size: clamp(18px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100px;
+    max-width: 110px;
     -webkit-line-clamp: 2;
     font-family: "Protest Strike", sans-serif;
     text-transform: capitalize;

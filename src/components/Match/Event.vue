@@ -117,7 +117,7 @@ watch(() => props.isTimerRunning, (newValue) => {
     font-size: clamp(20px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 105px;
+    max-width: 115px;
     height: 161px;
     -webkit-line-clamp: 1;
     gap: 10px;
@@ -134,7 +134,7 @@ watch(() => props.isTimerRunning, (newValue) => {
     flex-direction: row;
     font-size: 80px;
     font-weight: 800;
-    gap: 10px;
+    gap: 5px;
 }
 
 .right__teamSection {
@@ -145,7 +145,8 @@ watch(() => props.isTimerRunning, (newValue) => {
     font-size: clamp(20px, 2vw, 12px);
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 105px;
+    width: 115px;
+    max-width: 115px;
     height: 161px;
     -webkit-line-clamp: 1;
     gap: 10px;

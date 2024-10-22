@@ -5,7 +5,9 @@
       <AddToTeamIcon />
     </button>
   </div>
-
+  <div class="playerInTeamName" v-else>
+    <span>{{ teamName }}</span>
+  </div>
   <ModalWindow :isActive="isModalActive" @close="closeModal">
     <div class="teamSelectModalWindow">
       <h1>Оберіть команду</h1>
@@ -20,36 +22,52 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { findAllTeamInDb } from '@/api/team';
-import { updatePlayerTeamInDb } from '@/api/player'; // Обновляем функцию
+import { ref, onMounted, computed, watch } from 'vue';
+import { findAllTeamInDb, findTeamById } from '@/api/team';
+import { updatePlayerTeamInDb } from '@/api/player';
 import { AddToTeamIcon } from '@/constants/importIcons';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import ModalWindow from '../ModalWindow.vue';
 import TeamListItem from '../Team/TeamListItem.vue';
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
-
 const props = defineProps({
   player: {
     type: Object,
     required: true
-  }
+  },
+  team: {
+    type: Object,
+    required: false,
+  },
 });
-
 const teams = ref([]);
+const playerTeam = ref(props.team || null);
 
 const isPlayerInTeam = computed(() => {
-  return props.player.teamLogo && props.player.teamLogo.length > 0;
+  return playerTeam.value !== null;
+});
+const teamName = computed(() => {
+  return playerTeam.value ? playerTeam.value.teamName : 'Без команди';
 });
 
 const emit = defineEmits(['team-selected']);
 
 const selectTeam = async (team) => {
-  try {
-    await updatePlayerTeamInDb(props.player.id, team);
-    props.player.teamLogo = team.teamLogo;
+  if (!team.id || !team.teamName) {
+    console.error("Ошибка: Объект команды не содержит необходимые поля.", team);
+    return;
+  }
 
+  try {
+    const teamLogo = team.teamLogo || null;
+    await updatePlayerTeamInDb(props.player.id, {
+      id: team.id,
+      teamLogo: teamLogo,
+      name: team.teamName,
+    }, props.player);
+    props.player.teamLogo = teamLogo;
+    playerTeam.value = team;
     emit('team-selected', { team, player: props.player });
     closeModal();
   } catch (error) {
@@ -60,12 +78,17 @@ const selectTeam = async (team) => {
 onMounted(async () => {
   try {
     teams.value = await findAllTeamInDb();
+
+    if (!playerTeam.value && props.player.teamId) {
+      const playerTeamData = await findTeamById(props.player.teamId);
+      playerTeam.value = playerTeamData;
+    }
   } catch (error) {
-    console.error('Ошибка при загрузке команд:', error);
+    console.error('Ошибка при загрузке команд или команды игрока:', error);
   }
 });
-</script>
 
+</script>
 
 <style scoped>
 .teamSelectModalWindow {
@@ -110,5 +133,13 @@ onMounted(async () => {
 
 .add_playerToSquad:hover {
   opacity: 0.6;
+}
+
+.playerInTeamName {
+  display: flex;
+  font-family: "Protest Strike", sans-serif;
+  text-transform: capitalize;
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>

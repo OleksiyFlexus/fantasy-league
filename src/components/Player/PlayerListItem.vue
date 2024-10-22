@@ -4,7 +4,8 @@
             <img class="card__img" src="@/assets/images/PlayerCard.png" alt="player card">
             <p class="player__cardName">{{ player.surname }}</p>
             <p class="player__Number">{{ player.number }}</p>
-            <img v-if="teamLogo" :src="teamLogo" class="playerTeamLogo" alt="team logo">
+            <img v-if="teamLogo" :src="teamLogo" class="playerTeamLogo" alt="team logo" />
+            <img v-else-if="player.teamId" :src="defaultTeamLogo" class="playerTeamLogo" alt="Default team logo" />
             <img v-if="player.photo" class="player__photo" :src="player.photo" alt="player photo">
             <img v-else class="player__photo" src="@/assets/images/UndefinePhoto.png" alt="player photo">
         </div>
@@ -31,15 +32,27 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { Games, Goals, Assist } from '@/constants/importIcons';
 import AddButtonToSquad from '@/components/Player/AddButtonToSquad.vue';
-const emit = defineEmits(['team-selected']);
+import defaultTeamLogo from '@/assets/images/DefaultTeamLogo.png';
 
+const emit = defineEmits(['team-selected']);
 const props = defineProps({
     player: {
         type: Object,
         required: true
     }
+});
+
+const teamLogo = computed(() => {
+    if (props.player.teamLogo && props.player.teamLogo.length > 0) {
+        return props.player.teamLogo; 
+    }
+    if (props.player.teamId) {
+        return defaultTeamLogo;
+    }
+    return '';
 });
 
 const handleTeamSelected = (teamData) => {

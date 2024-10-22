@@ -1,6 +1,6 @@
 import { database } from '@/firebase';
-import { getDatabase, ref, ref as dbRef, push, set, onValue } from 'firebase/database';
-// Функция для создания команды в базе данных
+import { getDatabase, ref, ref as dbRef, push, set, onValue, get } from 'firebase/database';
+
 export const createTeamInDb = async (teamData) => {
   try {
     const db = getDatabase();
@@ -8,21 +8,20 @@ export const createTeamInDb = async (teamData) => {
     
     const teamWithPlayers = {
       ...teamData,
-      players: [], // Инициализируем команду без игроков
+      players: [],
     };
     
     await set(newTeamRef, teamWithPlayers);
     console.log('Команда успішно створена', newTeamRef.key);
-    return newTeamRef.key; // Возвращаем сгенерированный ID команды
+    return newTeamRef.key; 
   } catch (error) {
     console.error('Помилка при створенні команди:', error);
   }
 };
 
-// Функция для получения всех команд из базы данных
 export const findAllTeamInDb = () => {
   return new Promise((resolve, reject) => {
-      const teamsRef = dbRef(database, 'teams'); // Путь к коллекции команд
+      const teamsRef = dbRef(database, 'teams');
 
       onValue(teamsRef, (snapshot) => {
           const teamsData = snapshot.val();
@@ -32,7 +31,7 @@ export const findAllTeamInDb = () => {
                   ...teamsData[key]
               })));
           } else {
-              resolve([]); // Возвращаем пустой массив, если команды не найдены
+              resolve([]);
           }
       }, (error) => {
           console.error('Ошибка при загрузке команд:', error);
@@ -41,7 +40,6 @@ export const findAllTeamInDb = () => {
   });
 };
 
-// Функция для поиска команды по ID
 export const findTeamById = async (teamId) => {
   try {
     const db = getDatabase();
