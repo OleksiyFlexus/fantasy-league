@@ -32,12 +32,11 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, watch } from 'vue';
 import { Games, Goals, Assist } from '@/constants/importIcons';
 import AddButtonToSquad from '@/components/Player/AddButtonToSquad.vue';
 import defaultTeamLogo from '@/assets/images/DefaultTeamLogo.png';
 
-const emit = defineEmits(['team-selected']);
 const props = defineProps({
     player: {
         type: Object,
@@ -45,19 +44,16 @@ const props = defineProps({
     }
 });
 
-const teamLogo = computed(() => {
-    if (props.player.teamLogo && props.player.teamLogo.length > 0) {
-        return props.player.teamLogo; 
-    }
-    if (props.player.teamId) {
-        return defaultTeamLogo;
-    }
-    return '';
-});
+const teamLogo = ref(props.player.teamLogo || '');
 
 const handleTeamSelected = (teamData) => {
-    emit('team-selected', teamData);
+    props.player.teamLogo = teamData.team.teamLogo || defaultTeamLogo;
+    teamLogo.value = props.player.teamLogo;
 };
+
+watch(() => props.player.teamLogo, (newLogo) => {
+    teamLogo.value = newLogo;
+});
 </script>
 
 <style scoped>
@@ -86,11 +82,11 @@ const handleTeamSelected = (teamData) => {
 }
 
 .player__nameSection {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    width: 113px;
     max-width: 113px;
-    gap: 3px;
     padding-top: 15px;
+    padding-left: 5px;
 
 }
 

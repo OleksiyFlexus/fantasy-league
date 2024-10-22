@@ -8,12 +8,12 @@
                 <img :src="leftTeam.logo || defaultLogo" alt="default logo">
             </div>
             <div class="leftTeamName">
-                <p>{{ leftTeam.teamName || 'Левая команда' }}</p>
+                <p>{{ leftTeam.teamName || 'Ліва команда' }}</p>
             </div>
         </div>
         <div class="rightProtocolSection">
             <div class="rightTeamName">
-                <p>{{ rightTeam.teamName || 'Правая команда' }}</p>
+                <p>{{ rightTeam.teamName || 'Права команда' }}</p>
             </div>
             <div class="rightTeamLogo">
                 <img :src="rightTeam.logo || defaultLogo" alt="default logo">
@@ -86,8 +86,8 @@ watch(() => props.rightTeam, (newValue) => {
 }
 
 .protocolSection img {
-    width: 45px;
-    height: 45px;
+    width: 35px;
+    height: 35px;
     object-fit: cover;
     object-position: top;
 

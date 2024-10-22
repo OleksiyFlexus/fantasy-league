@@ -22,15 +22,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { findAllTeamInDb, findTeamById } from '@/api/team';
 import { updatePlayerTeamInDb } from '@/api/player';
 import { AddToTeamIcon } from '@/constants/importIcons';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import ModalWindow from '../ModalWindow.vue';
 import TeamListItem from '../Team/TeamListItem.vue';
+import defaultTeamLogo from '@/assets/images/DefaultTeamLogo.png';
 
 const { isModalActive, openModal, closeModal } = useModalWindow();
+
 const props = defineProps({
   player: {
     type: Object,
@@ -41,34 +43,31 @@ const props = defineProps({
     required: false,
   },
 });
+
 const teams = ref([]);
 const playerTeam = ref(props.team || null);
-
-const isPlayerInTeam = computed(() => {
-  return playerTeam.value !== null;
-});
-const teamName = computed(() => {
-  return playerTeam.value ? playerTeam.value.teamName : 'Без команди';
-});
+const isPlayerInTeam = computed(() => playerTeam.value !== null);
+const teamName = computed(() => playerTeam.value ? playerTeam.value.teamName : 'Без команди');
 
 const emit = defineEmits(['team-selected']);
 
 const selectTeam = async (team) => {
-  if (!team.id || !team.teamName) {
+  if (!team.id) {
     console.error("Ошибка: Объект команды не содержит необходимые поля.", team);
     return;
   }
 
+  const teamLogo = team.logo || defaultTeamLogo;
+
   try {
-    const teamLogo = team.teamLogo || null;
+    playerTeam.value = { ...team, teamLogo: teamLogo };
     await updatePlayerTeamInDb(props.player.id, {
       id: team.id,
       teamLogo: teamLogo,
       name: team.teamName,
     }, props.player);
-    props.player.teamLogo = teamLogo;
-    playerTeam.value = team;
-    emit('team-selected', { team, player: props.player });
+
+    emit('team-selected', { team: playerTeam.value, player: props.player });
     closeModal();
   } catch (error) {
     console.error("Ошибка при добавлении игрока в команду:", error);
@@ -78,7 +77,6 @@ const selectTeam = async (team) => {
 onMounted(async () => {
   try {
     teams.value = await findAllTeamInDb();
-
     if (!playerTeam.value && props.player.teamId) {
       const playerTeamData = await findTeamById(props.player.teamId);
       playerTeam.value = playerTeamData;
@@ -87,7 +85,6 @@ onMounted(async () => {
     console.error('Ошибка при загрузке команд или команды игрока:', error);
   }
 });
-
 </script>
 
 <style scoped>

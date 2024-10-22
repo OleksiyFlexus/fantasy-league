@@ -2,7 +2,7 @@
     <div class="event__section">
         <div class="left__teamSection" @click="!isTimerBlocked ? openTeamSelection('left') : null">
             <img :src="leftTeam.logo || defaultLogo" alt="left team logo">
-            <p>{{ leftTeam.teamName || 'Выберите команду' }}</p>
+            <p>{{ leftTeam.teamName || 'Обрати команду' }}</p>
         </div>
         <div class="middle__scoreSection">
             <div class="leftTeam__score">
@@ -17,13 +17,13 @@
         </div>
         <div class="right__teamSection" @click="!isTimerBlocked ? openTeamSelection('right') : null">
             <img :src="rightTeam.logo || defaultLogo" alt="right team logo">
-            <p>{{ rightTeam.teamName || 'Выберите команду' }}</p>
+            <p>{{ rightTeam.teamName || 'Обрати команду' }}</p>
         </div>
         <ModalWindow :isActive="isModalActive" @close="closeModal">
             <div class="teamSelectModalWindow">
-                <h1>Выберите команду</h1>
+                <h1>Оберіть команду</h1>
                 <div class="selectTeamSection">
-                    <div v-if="teams.length === 0">Нет доступных команд</div>
+                    <div v-if="teams.length === 0">Немає доступних команд</div>
                     <div v-for="team in teams" :key="team.id" @click="selectTeam(team)">
                         <TeamListItem :team="team" />
                     </div>
@@ -37,7 +37,7 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import { useModalWindow } from '@/helpers/useModalWindow';
 import ModalWindow from '@/components/ModalWindow.vue';
-import TeamListItem from '@/components/team/TeamListItem.vue';
+import TeamListItem from '@/components/Team/TeamListItem.vue';
 import defaultLogo from '@/assets/images/DefaultTeamLogo.png';
 
 const props = defineProps({

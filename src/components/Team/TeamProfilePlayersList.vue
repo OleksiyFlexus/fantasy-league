@@ -18,7 +18,6 @@
 
 <script setup>
 const props = defineProps({ players: Array });
-
 </script>
 
 <style scoped>
@@ -26,7 +25,7 @@ const props = defineProps({ players: Array });
     display: flex;
     flex-direction: column;
     text-transform: capitalize;
-    gap: 25px;
+    gap: 10px;
     font-size: 20px;
     font-weight: 700;
     width: auto;
@@ -36,7 +35,7 @@ const props = defineProps({ players: Array });
     display: flex;
     align-items: center;
     background-color: #cecece;
-    gap: 20px;
+    gap: 10px;
 }
 
 
@@ -50,8 +49,9 @@ const props = defineProps({ players: Array });
     display: flex;
     align-items: center;
     text-align: center;
-    gap: 10px;
+    gap: 7px;
     height: 100px;
+    max-width: 100px;
     font-size: 24px;
 }
 
@@ -63,6 +63,13 @@ const props = defineProps({ players: Array });
     font-weight: 700;
     height: 50px;
     background-color: #cecece;
+}
+
+.playerPhoto img {
+    max-height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: top;
 }
 
 </style>

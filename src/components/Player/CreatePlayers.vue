@@ -44,7 +44,6 @@ const emit = defineEmits(["player-created"]);
 const showNotification = ref(false);
 const notificationMessage = ref("");
 
-const players = ref([]);
 const error = ref(null);
 let errorTimeout = null;
 

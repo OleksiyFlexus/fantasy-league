@@ -74,17 +74,18 @@ export const updatePlayerTeamInDb = async (playerId, team, player) => {
     const playerRef = dbRef(db, `players/${playerId}`);
     const updates = {};
 
-    // Убедитесь, что логотип команды передается и сохраняется
     if (team && team.id) {
-      updates.teamLogo = team.teamLogo; // Сохраняем логотип
-      updates.teamId = team.id; // Сохраняем ID команды
+      updates.teamLogo = team.teamLogo;
+      updates.teamId = team.id;
     } else {
-      updates.teamLogo = null; // Убираем логотип, если команды нет
-      updates.teamId = null; // Убираем ID команды
+      updates.teamLogo = null;
+      updates.teamId = null;
     }
 
-    await update(playerRef, updates); // Обновляем данные игрока
-    console.log("Обновления для игрока:", updates); // Лог для проверки
+    updates.photo = player.photo || "";
+
+    await update(playerRef, updates);
+    console.log("Обновления для игрока:", updates);
 
     if (team && team.id) {
       const teamPlayersRef = dbRef(db, `teams/${team.id}/players/${playerId}`);
@@ -92,6 +93,7 @@ export const updatePlayerTeamInDb = async (playerId, team, player) => {
         playerId,
         name: player.name,
         surname: player.surname,
+        photo: player.photo || "",
       });
     }
   } catch (error) {
